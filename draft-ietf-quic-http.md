@@ -108,12 +108,12 @@ are often used to service requests in parallel. However, that has a negative
 impact on congestion control and network efficiency, since TCP does not share
 congestion control across multiple connections.
 
-HTTP/2 ({{?HTTP2=RFC7540}}) introduced a binary framing and multiplexing layer
-to improve latency without modifying the transport layer.  However, because the
-parallel nature of HTTP/2's multiplexing is not visible to TCP's loss recovery
-mechanisms, a lost or reordered packet causes all active transactions to
-experience a stall regardless of whether that transaction was directly impacted
-by the lost packet.
+HTTP/2 ({{?HTTP2=I-D.ietf-httpbis-http2bis}}) introduced a binary framing and
+multiplexing layer to improve latency without modifying the transport layer.
+However, because the parallel nature of HTTP/2's multiplexing is not visible to
+TCP's loss recovery mechanisms, a lost or reordered packet causes all active
+transactions to experience a stall regardless of whether that transaction was
+directly impacted by the lost packet.
 
 ## Delegation to QUIC
 
