@@ -103,7 +103,7 @@ compression that seeks to reduce head-of-line blocking.
 
 The QUIC transport protocol ({{QUIC-TRANSPORT}}) is designed to support HTTP
 semantics, and its design subsumes many of the features of HTTP/2
-({{?I-D.ietf-httpbis-http2bis}}). HTTP/2 uses HPACK ({{!RFC7541}}) for
+({{?HTTP2=I-D.ietf-httpbis-http2bis}}). HTTP/2 uses HPACK ({{!RFC7541}}) for
 compression of the header and trailer sections.  If HPACK were used for HTTP/3
 ({{HTTP3}}), it would induce head-of-line blocking for field sections due to
 built-in assumptions of a total ordering across frames on all streams.
