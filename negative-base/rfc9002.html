@@ -11,7 +11,7 @@
        This document describes loss detection and congestion control mechanisms for
 QUIC. 
     " name="description">
-<meta content="xml2rfc 3.9.1" name="generator">
+<meta content="xml2rfc 3.10.0" name="generator">
 <meta content="bbr" name="keyword">
 <meta content="delay-sensitive congestion control" name="keyword">
 <meta content="fec" name="keyword">
@@ -19,7 +19,7 @@ QUIC.
 <meta content="next generation" name="keyword">
 <meta content="9002" name="rfc.number">
 <!-- Generator version information:
-  xml2rfc 3.9.1
+  xml2rfc 3.10.0
     Python 3.9.5
     appdirs 1.4.4
     ConfigArgParse 1.3
@@ -275,10 +275,15 @@ h4, h5, h6 {
 .author {
   padding-bottom: 0.3em;
 }
-#abstract+p, #abstract+p code, #abstract+p samp, #abstract+p tt {
+#abstract+p {
   font-size: 18px;
   line-height: 24px;
 }
+#abstract+p code, #abstract+p samp, #abstract+p tt {
+  font-size: 16px;
+  line-height: 0;
+}
+
 p {
   padding: 0;
   margin: 0.5em 0;
@@ -410,6 +415,12 @@ a.xref {
 tt, code, pre {
   background-color: var(--highlight-color);
   font: 14px/22px 'Oxygen Mono', monospace;
+}
+tt, code {
+  /* changing the font for inline elements leads to different ascender
+     and descender heights; as we want to retain baseline alignment,
+     remove leading to avoid altering the final height of lines */
+  line-height: 0;
 }
 pre {
   border: 1px solid var(--line-color);
@@ -1105,256 +1116,256 @@ QUIC.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
         <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
 <a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
         </h2>
-<nav class="toc"><ul class="compact ulEmpty ulBare toc">
-<li class="compact ulEmpty ulBare toc" id="section-toc.1-1.1">
+<nav class="toc"><ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
             <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="xref">1</a>.  <a href="#name-introduction" class="xref">Introduction</a></p>
 </li>
-          <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.2">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
             <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="xref">2</a>.  <a href="#name-conventions-and-definitions" class="xref">Conventions and Definitions</a></p>
 </li>
-          <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.3">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
             <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="xref">3</a>.  <a href="#name-design-of-the-quic-transmis" class="xref">Design of the QUIC Transmission Machinery</a></p>
 </li>
-          <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.4">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="xref">4</a>.  <a href="#name-relevant-differences-betwee" class="xref">Relevant Differences Between QUIC and TCP</a></p>
-<ul class="compact ulEmpty ulBare toc">
-<li class="compact ulEmpty ulBare toc" id="section-toc.1-1.4.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
                 <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="xref">4.1</a>.  <a href="#name-separate-packet-number-spac" class="xref">Separate Packet Number Spaces</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.4.2.2">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
                 <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="xref">4.2</a>.  <a href="#name-monotonically-increasing-pa" class="xref">Monotonically Increasing Packet Numbers</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.4.2.3">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
                 <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="xref">4.3</a>.  <a href="#name-clearer-loss-epoch" class="xref">Clearer Loss Epoch</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.4.2.4">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4">
                 <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="xref">4.4</a>.  <a href="#name-no-reneging" class="xref">No Reneging</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.4.2.5">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.5">
                 <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="xref">4.5</a>.  <a href="#name-more-ack-ranges" class="xref">More ACK Ranges</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.4.2.6">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.6">
                 <p id="section-toc.1-1.4.2.6.1"><a href="#section-4.6" class="xref">4.6</a>.  <a href="#name-explicit-correction-for-del" class="xref">Explicit Correction For Delayed Acknowledgments</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.4.2.7">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.7">
                 <p id="section-toc.1-1.4.2.7.1"><a href="#section-4.7" class="xref">4.7</a>.  <a href="#name-probe-timeout-replaces-rto-" class="xref">Probe Timeout Replaces RTO and TLP</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.4.2.8">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.8">
                 <p id="section-toc.1-1.4.2.8.1"><a href="#section-4.8" class="xref">4.8</a>.  <a href="#name-the-minimum-congestion-wind" class="xref">The Minimum Congestion Window Is Two Packets</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.4.2.9">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.9">
                 <p id="section-toc.1-1.4.2.9.1"><a href="#section-4.9" class="xref">4.9</a>.  <a href="#name-handshake-packets-are-not-s" class="xref">Handshake Packets Are Not Special</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.5">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="xref">5</a>.  <a href="#name-estimating-the-round-trip-t" class="xref">Estimating the Round-Trip Time</a></p>
-<ul class="compact ulEmpty ulBare toc">
-<li class="compact ulEmpty ulBare toc" id="section-toc.1-1.5.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
                 <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="xref">5.1</a>.  <a href="#name-generating-rtt-samples" class="xref">Generating RTT Samples</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.5.2.2">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
                 <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="xref">5.2</a>.  <a href="#name-estimating-min_rtt" class="xref">Estimating min_rtt</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.5.2.3">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3">
                 <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="xref">5.3</a>.  <a href="#name-estimating-smoothed_rtt-and" class="xref">Estimating smoothed_rtt and rttvar</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.6">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="xref">6</a>.  <a href="#name-loss-detection" class="xref">Loss Detection</a></p>
-<ul class="compact ulEmpty ulBare toc">
-<li class="compact ulEmpty ulBare toc" id="section-toc.1-1.6.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
                 <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="xref">6.1</a>.  <a href="#name-acknowledgment-based-detect" class="xref">Acknowledgment-Based Detection</a></p>
-<ul class="compact ulEmpty ulBare toc">
-<li class="compact ulEmpty ulBare toc" id="section-toc.1-1.6.2.1.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1.2.1">
                     <p id="section-toc.1-1.6.2.1.2.1.1"><a href="#section-6.1.1" class="xref">6.1.1</a>.  <a href="#name-packet-threshold" class="xref">Packet Threshold</a></p>
 </li>
-                  <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.6.2.1.2.2">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1.2.2">
                     <p id="section-toc.1-1.6.2.1.2.2.1"><a href="#section-6.1.2" class="xref">6.1.2</a>.  <a href="#name-time-threshold" class="xref">Time Threshold</a></p>
 </li>
                 </ul>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.6.2.2">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
                 <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="xref">6.2</a>.  <a href="#name-probe-timeout" class="xref">Probe Timeout</a></p>
-<ul class="compact ulEmpty ulBare toc">
-<li class="compact ulEmpty ulBare toc" id="section-toc.1-1.6.2.2.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2.2.1">
                     <p id="section-toc.1-1.6.2.2.2.1.1"><a href="#section-6.2.1" class="xref">6.2.1</a>.  <a href="#name-computing-pto" class="xref">Computing PTO</a></p>
 </li>
-                  <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.6.2.2.2.2">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2.2.2">
                     <p id="section-toc.1-1.6.2.2.2.2.1"><a href="#section-6.2.2" class="xref">6.2.2</a>.  <a href="#name-handshakes-and-new-paths" class="xref">Handshakes and New Paths</a></p>
 </li>
-                  <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.6.2.2.2.3">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2.2.3">
                     <p id="section-toc.1-1.6.2.2.2.3.1"><a href="#section-6.2.3" class="xref">6.2.3</a>.  <a href="#name-speeding-up-handshake-compl" class="xref">Speeding up Handshake Completion</a></p>
 </li>
-                  <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.6.2.2.2.4">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2.2.4">
                     <p id="section-toc.1-1.6.2.2.2.4.1"><a href="#section-6.2.4" class="xref">6.2.4</a>.  <a href="#name-sending-probe-packets" class="xref">Sending Probe Packets</a></p>
 </li>
                 </ul>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.6.2.3">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.3">
                 <p id="section-toc.1-1.6.2.3.1"><a href="#section-6.3" class="xref">6.3</a>.  <a href="#name-handling-retry-packets" class="xref">Handling Retry Packets</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.6.2.4">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.4">
                 <p id="section-toc.1-1.6.2.4.1"><a href="#section-6.4" class="xref">6.4</a>.  <a href="#name-discarding-keys-and-packet-" class="xref">Discarding Keys and Packet State</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.7">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
             <p id="section-toc.1-1.7.1"><a href="#section-7" class="xref">7</a>.  <a href="#name-congestion-control" class="xref">Congestion Control</a></p>
-<ul class="compact ulEmpty ulBare toc">
-<li class="compact ulEmpty ulBare toc" id="section-toc.1-1.7.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
                 <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="xref">7.1</a>.  <a href="#name-explicit-congestion-notific" class="xref">Explicit Congestion Notification</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.7.2.2">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
                 <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="xref">7.2</a>.  <a href="#name-initial-and-minimum-congest" class="xref">Initial and Minimum Congestion Window</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.7.2.3">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3">
                 <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="xref">7.3</a>.  <a href="#name-congestion-control-states" class="xref">Congestion Control States</a></p>
-<ul class="compact ulEmpty ulBare toc">
-<li class="compact ulEmpty ulBare toc" id="section-toc.1-1.7.2.3.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3.2.1">
                     <p id="section-toc.1-1.7.2.3.2.1.1"><a href="#section-7.3.1" class="xref">7.3.1</a>.  <a href="#name-slow-start" class="xref">Slow Start</a></p>
 </li>
-                  <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.7.2.3.2.2">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3.2.2">
                     <p id="section-toc.1-1.7.2.3.2.2.1"><a href="#section-7.3.2" class="xref">7.3.2</a>.  <a href="#name-recovery" class="xref">Recovery</a></p>
 </li>
-                  <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.7.2.3.2.3">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3.2.3">
                     <p id="section-toc.1-1.7.2.3.2.3.1"><a href="#section-7.3.3" class="xref">7.3.3</a>.  <a href="#name-congestion-avoidance" class="xref">Congestion Avoidance</a></p>
 </li>
                 </ul>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.7.2.4">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.4">
                 <p id="section-toc.1-1.7.2.4.1"><a href="#section-7.4" class="xref">7.4</a>.  <a href="#name-ignoring-loss-of-undecrypta" class="xref">Ignoring Loss of Undecryptable Packets</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.7.2.5">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.5">
                 <p id="section-toc.1-1.7.2.5.1"><a href="#section-7.5" class="xref">7.5</a>.  <a href="#name-probe-timeout-2" class="xref">Probe Timeout</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.7.2.6">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.6">
                 <p id="section-toc.1-1.7.2.6.1"><a href="#section-7.6" class="xref">7.6</a>.  <a href="#name-persistent-congestion" class="xref">Persistent Congestion</a></p>
-<ul class="compact ulEmpty ulBare toc">
-<li class="compact ulEmpty ulBare toc" id="section-toc.1-1.7.2.6.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.6.2.1">
                     <p id="section-toc.1-1.7.2.6.2.1.1"><a href="#section-7.6.1" class="xref">7.6.1</a>.  <a href="#name-duration" class="xref">Duration</a></p>
 </li>
-                  <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.7.2.6.2.2">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.6.2.2">
                     <p id="section-toc.1-1.7.2.6.2.2.1"><a href="#section-7.6.2" class="xref">7.6.2</a>.  <a href="#name-establishing-persistent-con" class="xref">Establishing Persistent Congestion</a></p>
 </li>
-                  <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.7.2.6.2.3">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.6.2.3">
                     <p id="section-toc.1-1.7.2.6.2.3.1"><a href="#section-7.6.3" class="xref">7.6.3</a>.  <a href="#name-example" class="xref">Example</a></p>
 </li>
                 </ul>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.7.2.7">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.7">
                 <p id="section-toc.1-1.7.2.7.1"><a href="#section-7.7" class="xref">7.7</a>.  <a href="#name-pacing" class="xref">Pacing</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.7.2.8">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.8">
                 <p id="section-toc.1-1.7.2.8.1"><a href="#section-7.8" class="xref">7.8</a>.  <a href="#name-underutilizing-the-congesti" class="xref">Underutilizing the Congestion Window</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.8">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
             <p id="section-toc.1-1.8.1"><a href="#section-8" class="xref">8</a>.  <a href="#name-security-considerations" class="xref">Security Considerations</a></p>
-<ul class="compact ulEmpty ulBare toc">
-<li class="compact ulEmpty ulBare toc" id="section-toc.1-1.8.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1">
                 <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="xref">8.1</a>.  <a href="#name-loss-and-congestion-signals" class="xref">Loss and Congestion Signals</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.8.2.2">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
                 <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="xref">8.2</a>.  <a href="#name-traffic-analysis" class="xref">Traffic Analysis</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.8.2.3">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.3">
                 <p id="section-toc.1-1.8.2.3.1"><a href="#section-8.3" class="xref">8.3</a>.  <a href="#name-misreporting-ecn-markings" class="xref">Misreporting ECN Markings</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.9">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
             <p id="section-toc.1-1.9.1"><a href="#section-9" class="xref">9</a>.  <a href="#name-references" class="xref">References</a></p>
-<ul class="compact ulEmpty ulBare toc">
-<li class="compact ulEmpty ulBare toc" id="section-toc.1-1.9.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1">
                 <p id="section-toc.1-1.9.2.1.1"><a href="#section-9.1" class="xref">9.1</a>.  <a href="#name-normative-references" class="xref">Normative References</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.9.2.2">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.2">
                 <p id="section-toc.1-1.9.2.2.1"><a href="#section-9.2" class="xref">9.2</a>.  <a href="#name-informative-references" class="xref">Informative References</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.10">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
             <p id="section-toc.1-1.10.1"><a href="#appendix-A" class="xref">Appendix A</a>.  <a href="#name-loss-recovery-pseudocode" class="xref">Loss Recovery Pseudocode</a></p>
-<ul class="compact ulEmpty ulBare toc">
-<li class="compact ulEmpty ulBare toc" id="section-toc.1-1.10.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.1">
                 <p id="section-toc.1-1.10.2.1.1"><a href="#appendix-A.1" class="xref">A.1</a>.  <a href="#name-tracking-sent-packets" class="xref">Tracking Sent Packets</a></p>
-<ul class="compact ulEmpty ulBare toc">
-<li class="compact ulEmpty ulBare toc" id="section-toc.1-1.10.2.1.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.1.2.1">
                     <p id="section-toc.1-1.10.2.1.2.1.1"><a href="#appendix-A.1.1" class="xref">A.1.1</a>.  <a href="#name-sent-packet-fields" class="xref">Sent Packet Fields</a></p>
 </li>
                 </ul>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.10.2.2">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.2">
                 <p id="section-toc.1-1.10.2.2.1"><a href="#appendix-A.2" class="xref">A.2</a>.  <a href="#name-constants-of-interest" class="xref">Constants of Interest</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.10.2.3">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.3">
                 <p id="section-toc.1-1.10.2.3.1"><a href="#appendix-A.3" class="xref">A.3</a>.  <a href="#name-variables-of-interest" class="xref">Variables of Interest</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.10.2.4">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.4">
                 <p id="section-toc.1-1.10.2.4.1"><a href="#appendix-A.4" class="xref">A.4</a>.  <a href="#name-initialization" class="xref">Initialization</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.10.2.5">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.5">
                 <p id="section-toc.1-1.10.2.5.1"><a href="#appendix-A.5" class="xref">A.5</a>.  <a href="#name-on-sending-a-packet" class="xref">On Sending a Packet</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.10.2.6">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.6">
                 <p id="section-toc.1-1.10.2.6.1"><a href="#appendix-A.6" class="xref">A.6</a>.  <a href="#name-on-receiving-a-datagram" class="xref">On Receiving a Datagram</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.10.2.7">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.7">
                 <p id="section-toc.1-1.10.2.7.1"><a href="#appendix-A.7" class="xref">A.7</a>.  <a href="#name-on-receiving-an-acknowledgm" class="xref">On Receiving an Acknowledgment</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.10.2.8">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.8">
                 <p id="section-toc.1-1.10.2.8.1"><a href="#appendix-A.8" class="xref">A.8</a>.  <a href="#name-setting-the-loss-detection-" class="xref">Setting the Loss Detection Timer</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.10.2.9">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.9">
                 <p id="section-toc.1-1.10.2.9.1"><a href="#appendix-A.9" class="xref">A.9</a>.  <a href="#name-on-timeout" class="xref">On Timeout</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.10.2.10">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.10">
                 <p id="section-toc.1-1.10.2.10.1"><a href="#appendix-A.10" class="xref">A.10</a>. <a href="#name-detecting-lost-packets" class="xref">Detecting Lost Packets</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.10.2.11">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.11">
                 <p id="section-toc.1-1.10.2.11.1"><a href="#appendix-A.11" class="xref">A.11</a>. <a href="#name-upon-dropping-initial-or-ha" class="xref">Upon Dropping Initial or Handshake Keys</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.11">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
             <p id="section-toc.1-1.11.1"><a href="#appendix-B" class="xref">Appendix B</a>.  <a href="#name-congestion-control-pseudoco" class="xref">Congestion Control Pseudocode</a></p>
-<ul class="compact ulEmpty ulBare toc">
-<li class="compact ulEmpty ulBare toc" id="section-toc.1-1.11.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.1">
                 <p id="section-toc.1-1.11.2.1.1"><a href="#appendix-B.1" class="xref">B.1</a>.  <a href="#name-constants-of-interest-2" class="xref">Constants of Interest</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.11.2.2">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.2">
                 <p id="section-toc.1-1.11.2.2.1"><a href="#appendix-B.2" class="xref">B.2</a>.  <a href="#name-variables-of-interest-2" class="xref">Variables of Interest</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.11.2.3">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.3">
                 <p id="section-toc.1-1.11.2.3.1"><a href="#appendix-B.3" class="xref">B.3</a>.  <a href="#name-initialization-2" class="xref">Initialization</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.11.2.4">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.4">
                 <p id="section-toc.1-1.11.2.4.1"><a href="#appendix-B.4" class="xref">B.4</a>.  <a href="#name-on-packet-sent" class="xref">On Packet Sent</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.11.2.5">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.5">
                 <p id="section-toc.1-1.11.2.5.1"><a href="#appendix-B.5" class="xref">B.5</a>.  <a href="#name-on-packet-acknowledgment" class="xref">On Packet Acknowledgment</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.11.2.6">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.6">
                 <p id="section-toc.1-1.11.2.6.1"><a href="#appendix-B.6" class="xref">B.6</a>.  <a href="#name-on-new-congestion-event" class="xref">On New Congestion Event</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.11.2.7">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.7">
                 <p id="section-toc.1-1.11.2.7.1"><a href="#appendix-B.7" class="xref">B.7</a>.  <a href="#name-process-ecn-information" class="xref">Process ECN Information</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.11.2.8">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.8">
                 <p id="section-toc.1-1.11.2.8.1"><a href="#appendix-B.8" class="xref">B.8</a>.  <a href="#name-on-packets-lost" class="xref">On Packets Lost</a></p>
 </li>
-              <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.11.2.9">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.9">
                 <p id="section-toc.1-1.11.2.9.1"><a href="#appendix-B.9" class="xref">B.9</a>.  <a href="#name-removing-discarded-packets-" class="xref">Removing Discarded Packets from Bytes in Flight</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.12">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
             <p id="section-toc.1-1.12.1"><a href="#appendix-C" class="xref"></a><a href="#name-contributors" class="xref">Contributors</a></p>
 </li>
-          <li class="compact ulEmpty ulBare toc" id="section-toc.1-1.13">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
             <p id="section-toc.1-1.13.1"><a href="#appendix-D" class="xref"></a><a href="#name-authors-addresses" class="xref">Authors' Addresses</a></p>
 </li>
         </ul>
@@ -1618,7 +1629,7 @@ following two conditions:<a href="#section-5.1-1" class="pilcrow">¶</a></p>
 <p id="section-5.1-3">The RTT sample, latest_rtt, is generated as the time elapsed since the largest
 acknowledged packet was sent:<a href="#section-5.1-3" class="pilcrow">¶</a></p>
 <div id="section-5.1-4">
-<pre class="sourcecode lang-pseudocode">
+<pre class="lang-pseudocode sourcecode">
 latest_rtt = ack_time - send_time_of_largest_acked
 </pre><a href="#section-5.1-4" class="pilcrow">¶</a>
 </div>
@@ -1741,7 +1752,7 @@ the estimator is reset, the estimator is initialized using the initial RTT; see
 <p id="section-5.3-11">smoothed_rtt and rttvar are initialized as follows, where kInitialRtt contains
 the initial RTT value:<a href="#section-5.3-11" class="pilcrow">¶</a></p>
 <div id="section-5.3-12">
-<pre class="sourcecode lang-pseudocode">
+<pre class="lang-pseudocode sourcecode">
 smoothed_rtt = kInitialRtt
 rttvar = kInitialRtt / 2
 </pre><a href="#section-5.3-12" class="pilcrow">¶</a>
@@ -1754,14 +1765,14 @@ current path, as described in <span><a href="https://rfc-editor.org/rfc/rfc9000#
 <p id="section-5.3-14">On the first RTT sample after initialization, smoothed_rtt and rttvar are set as
 follows:<a href="#section-5.3-14" class="pilcrow">¶</a></p>
 <div id="section-5.3-15">
-<pre class="sourcecode lang-pseudocode">
+<pre class="lang-pseudocode sourcecode">
 smoothed_rtt = latest_rtt
 rttvar = latest_rtt / 2
 </pre><a href="#section-5.3-15" class="pilcrow">¶</a>
 </div>
 <p id="section-5.3-16">On subsequent RTT samples, smoothed_rtt and rttvar evolve as follows:<a href="#section-5.3-16" class="pilcrow">¶</a></p>
 <div id="section-5.3-17">
-<pre class="sourcecode lang-pseudocode">
+<pre class="lang-pseudocode sourcecode">
 ack_delay = decoded acknowledgment delay from ACK frame
 if (handshake confirmed):
   ack_delay = min(ack_delay, max_ack_delay)
@@ -1848,7 +1859,7 @@ amount of time in the past. To avoid declaring packets as lost too early, this
 time threshold <span class="bcp14">MUST</span> be set to at least the local timer granularity, as
 indicated by the kGranularity constant.  The time threshold is:<a href="#section-6.1.2-1" class="pilcrow">¶</a></p>
 <div id="section-6.1.2-2">
-<pre class="sourcecode lang-pseudocode">
+<pre class="lang-pseudocode sourcecode">
 max(kTimeThreshold * max(smoothed_rtt, latest_rtt), kGranularity)
 </pre><a href="#section-6.1.2-2" class="pilcrow">¶</a>
 </div>
@@ -1905,7 +1916,7 @@ Probe <span>[<a href="#RFC8985" class="xref">RFC8985</a>]</span>, RTO <span>[<a 
 <p id="section-6.2.1-1">When an ack-eliciting packet is transmitted, the sender schedules a timer for
 the PTO period as follows:<a href="#section-6.2.1-1" class="pilcrow">¶</a></p>
 <div id="section-6.2.1-2">
-<pre class="sourcecode lang-pseudocode">
+<pre class="lang-pseudocode sourcecode">
 PTO = smoothed_rtt + max(4*rttvar, kGranularity) + max_ack_delay
 </pre><a href="#section-6.2.1-2" class="pilcrow">¶</a>
 </div>
@@ -2202,7 +2213,7 @@ or persistent congestion.  The <span class="bcp14">RECOMMENDED</span> value is 2
 distinct states, as shown in <a href="#fig-cc-fsm" class="xref">Figure 1</a>.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
 <span id="name-congestion-control-states-a"></span><div id="fig-cc-fsm">
 <figure id="figure-1">
-          <div class="artwork art-text alignLeft" id="section-7.3-2.1">
+          <div class="alignLeft art-text artwork" id="section-7.3-2.1">
 <pre>
                  New path or      +------------+
             persistent congestion |   Slow     |
@@ -2333,7 +2344,7 @@ the network is considered to be experiencing persistent congestion.<a href="#sec
           </h4>
 <p id="section-7.6.1-1">The persistent congestion duration is computed as follows:<a href="#section-7.6.1-1" class="pilcrow">¶</a></p>
 <div id="section-7.6.1-2">
-<pre class="sourcecode lang-pseudocode">
+<pre class="lang-pseudocode sourcecode">
 (smoothed_rtt + max(4*rttvar, kGranularity) + max_ack_delay) *
     kPersistentCongestionThreshold
 </pre><a href="#section-7.6.1-2" class="pilcrow">¶</a>
@@ -2405,7 +2416,7 @@ sender's response on an RTO <span>[<a href="#RFC5681" class="xref">RFC5681</a>]<
 <p id="section-7.6.3-1">The following example illustrates how a sender might establish persistent
 congestion. Assume:<a href="#section-7.6.3-1" class="pilcrow">¶</a></p>
 <div id="section-7.6.3-2">
-<pre class="sourcecode lang-pseudocode">
+<pre class="lang-pseudocode sourcecode">
 smoothed_rtt + max(4*rttvar, kGranularity) + max_ack_delay = 2
 kPersistentCongestionThreshold = 3
 </pre><a href="#section-7.6.3-2" class="pilcrow">¶</a>
@@ -2505,13 +2516,13 @@ as the one in this document, that rate can be computed by averaging the
 congestion window over the RTT. Expressed as a rate in units of
 bytes per time, where congestion_window is in bytes:<a href="#section-7.7-5" class="pilcrow">¶</a></p>
 <div id="section-7.7-6">
-<pre class="sourcecode lang-pseudocode">
+<pre class="lang-pseudocode sourcecode">
 rate = N * congestion_window / smoothed_rtt
 </pre><a href="#section-7.7-6" class="pilcrow">¶</a>
 </div>
 <p id="section-7.7-7">Or expressed as an inter-packet interval in units of time:<a href="#section-7.7-7" class="pilcrow">¶</a></p>
 <div id="section-7.7-8">
-<pre class="sourcecode lang-pseudocode">
+<pre class="lang-pseudocode sourcecode">
 interval = ( smoothed_rtt * packet_size / congestion_window ) / N
 </pre><a href="#section-7.7-8" class="pilcrow">¶</a>
 </div>
@@ -2814,7 +2825,7 @@ recommends a value of 1 ms.<a href="#appendix-A.2-2.6.1" class="pilcrow">¶</a><
 </dd>
         <dd class="break"></dd>
 </dl>
-<div class="artwork art-text alignLeft" id="appendix-A.2-3">
+<div class="alignLeft art-text artwork" id="appendix-A.2-3">
 <pre>
 enum kPacketNumberSpace {
   Initial,
@@ -2912,7 +2923,7 @@ about them.  Described in detail above in <a href="#tracking-sent-packets" class
 <p id="appendix-A.4-1">At the beginning of the connection, initialize the loss detection variables as
 follows:<a href="#appendix-A.4-1" class="pilcrow">¶</a></p>
 <div id="appendix-A.4-2">
-<pre class="sourcecode lang-pseudocode">
+<pre class="lang-pseudocode sourcecode">
 loss_detection_timer.reset()
 pto_count = 0
 latest_rtt = 0
@@ -2937,7 +2948,7 @@ for pn_space in [ Initial, Handshake, ApplicationData ]:
 to OnPacketSent are described in detail above in <a href="#sent-packets-fields" class="xref">Appendix A.1.1</a>.<a href="#appendix-A.5-1" class="pilcrow">¶</a></p>
 <p id="appendix-A.5-2">Pseudocode for OnPacketSent follows:<a href="#appendix-A.5-2" class="pilcrow">¶</a></p>
 <div id="appendix-A.5-3">
-<pre class="sourcecode lang-pseudocode">
+<pre class="lang-pseudocode sourcecode">
 OnPacketSent(packet_number, pn_space, ack_eliciting,
              in_flight, sent_bytes):
   sent_packets[pn_space][packet_number].packet_number =
@@ -2967,7 +2978,7 @@ datagram are successfully processed. In such a case, the PTO
 timer will need to be rearmed.<a href="#appendix-A.6-1" class="pilcrow">¶</a></p>
 <p id="appendix-A.6-2">Pseudocode for OnDatagramReceived follows:<a href="#appendix-A.6-2" class="pilcrow">¶</a></p>
 <div id="appendix-A.6-3">
-<pre class="sourcecode lang-pseudocode">
+<pre class="lang-pseudocode sourcecode">
 OnDatagramReceived(datagram):
   // If this datagram unblocks the server, arm the
   // PTO timer to avoid deadlock.
@@ -2989,7 +3000,7 @@ OnDatagramReceived(datagram):
 <p id="appendix-A.7-1">When an ACK frame is received, it may newly acknowledge any number of packets.<a href="#appendix-A.7-1" class="pilcrow">¶</a></p>
 <p id="appendix-A.7-2">Pseudocode for OnAckReceived and UpdateRtt follow:<a href="#appendix-A.7-2" class="pilcrow">¶</a></p>
 <div id="appendix-A.7-3">
-<pre class="sourcecode lang-pseudocode">
+<pre class="lang-pseudocode sourcecode">
 IncludesAckEliciting(packets):
   for packet in packets:
     if (packet.ack_eliciting):
@@ -3076,7 +3087,7 @@ timers wake up late. Timers set in the past fire immediately.<a href="#appendix-
 <p id="appendix-A.8-3">Pseudocode for SetLossDetectionTimer follows (where the "^" operator represents
 exponentiation):<a href="#appendix-A.8-3" class="pilcrow">¶</a></p>
 <div id="appendix-A.8-4">
-<pre class="sourcecode lang-pseudocode">
+<pre class="lang-pseudocode sourcecode">
 GetLossTimeAndSpace():
   time = loss_time[Initial]
   space = Initial
@@ -3158,7 +3169,7 @@ SetLossDetectionTimer():
 to be performed.<a href="#appendix-A.9-1" class="pilcrow">¶</a></p>
 <p id="appendix-A.9-2">Pseudocode for OnLossDetectionTimeout follows:<a href="#appendix-A.9-2" class="pilcrow">¶</a></p>
 <div id="appendix-A.9-3">
-<pre class="sourcecode lang-pseudocode">
+<pre class="lang-pseudocode sourcecode">
 OnLossDetectionTimeout():
   earliest_loss_time, pn_space = GetLossTimeAndSpace()
   if (earliest_loss_time != 0):
@@ -3201,7 +3212,7 @@ sent_packets for that packet number space and returns a list of packets newly
 detected as lost.<a href="#appendix-A.10-1" class="pilcrow">¶</a></p>
 <p id="appendix-A.10-2">Pseudocode for DetectAndRemoveLostPackets follows:<a href="#appendix-A.10-2" class="pilcrow">¶</a></p>
 <div id="appendix-A.10-3">
-<pre class="sourcecode lang-pseudocode">
+<pre class="lang-pseudocode sourcecode">
 DetectAndRemoveLostPackets(pn_space):
   assert(largest_acked_packet[pn_space] != infinite)
   loss_time[pn_space] = 0
@@ -3246,7 +3257,7 @@ DetectAndRemoveLostPackets(pn_space):
 are discarded and loss detection state is updated.<a href="#appendix-A.11-1" class="pilcrow">¶</a></p>
 <p id="appendix-A.11-2">Pseudocode for OnPacketNumberSpaceDiscarded follows:<a href="#appendix-A.11-2" class="pilcrow">¶</a></p>
 <div id="appendix-A.11-3">
-<pre class="sourcecode lang-pseudocode">
+<pre class="lang-pseudocode sourcecode">
 OnPacketNumberSpaceDiscarded(pn_space):
   assert(pn_space != ApplicationData)
   RemoveFromBytesInFlight(sent_packets[pn_space])
@@ -3370,7 +3381,7 @@ loss recovery pseudocode.<a href="#appendix-B.2-3" class="pilcrow">¶</a></p>
 <p id="appendix-B.3-1">At the beginning of the connection, initialize the congestion control
 variables as follows:<a href="#appendix-B.3-1" class="pilcrow">¶</a></p>
 <div id="appendix-B.3-2">
-<pre class="sourcecode lang-pseudocode">
+<pre class="lang-pseudocode sourcecode">
 congestion_window = kInitialWindow
 bytes_in_flight = 0
 congestion_recovery_start_time = 0
@@ -3389,7 +3400,7 @@ for pn_space in [ Initial, Handshake, ApplicationData ]:
 <p id="appendix-B.4-1">Whenever a packet is sent and it contains non-ACK frames, the packet
 increases bytes_in_flight.<a href="#appendix-B.4-1" class="pilcrow">¶</a></p>
 <div id="appendix-B.4-2">
-<pre class="sourcecode lang-pseudocode">
+<pre class="lang-pseudocode sourcecode">
 OnPacketSentCC(sent_bytes):
   bytes_in_flight += sent_bytes
 </pre><a href="#appendix-B.4-2" class="pilcrow">¶</a>
@@ -3407,7 +3418,7 @@ newly acked_packets from sent_packets.<a href="#appendix-B.5-1" class="pilcrow">
 for congestion_window should be careful with division and can use
 the alternative approach suggested in <span><a href="https://rfc-editor.org/rfc/rfc3465#section-2.1" class="relref">Section 2.1</a> of [<a href="#RFC3465" class="xref">RFC3465</a>]</span>.<a href="#appendix-B.5-2" class="pilcrow">¶</a></p>
 <div id="appendix-B.5-3">
-<pre class="sourcecode lang-pseudocode">
+<pre class="lang-pseudocode sourcecode">
 InCongestionRecovery(sent_time):
   return sent_time &lt;= congestion_recovery_start_time
 
@@ -3448,7 +3459,7 @@ OnPacketAcked(acked_packet):
 detected. If not already in recovery, this starts a recovery period and
 reduces the slow start threshold and congestion window immediately.<a href="#appendix-B.6-1" class="pilcrow">¶</a></p>
 <div id="appendix-B.6-2">
-<pre class="sourcecode lang-pseudocode">
+<pre class="lang-pseudocode sourcecode">
 OnCongestionEvent(sent_time):
   // No reaction if already in a recovery period.
   if (InCongestionRecovery(sent_time)):
@@ -3471,7 +3482,7 @@ OnCongestionEvent(sent_time):
         </h3>
 <p id="appendix-B.7-1">This is invoked when an ACK frame with an ECN section is received from the peer.<a href="#appendix-B.7-1" class="pilcrow">¶</a></p>
 <div id="appendix-B.7-2">
-<pre class="sourcecode lang-pseudocode">
+<pre class="lang-pseudocode sourcecode">
 ProcessECN(ack, pn_space):
   // If the ECN-CE counter reported by the peer has increased,
   // this could be a new congestion event.
@@ -3490,7 +3501,7 @@ ProcessECN(ack, pn_space):
         </h3>
 <p id="appendix-B.8-1">This is invoked when DetectAndRemoveLostPackets deems packets lost.<a href="#appendix-B.8-1" class="pilcrow">¶</a></p>
 <div id="appendix-B.8-2">
-<pre class="sourcecode lang-pseudocode">
+<pre class="lang-pseudocode sourcecode">
 OnPacketsLost(lost_packets):
   sent_time_of_last_loss = 0
   // Remove lost packets from bytes_in_flight.
@@ -3528,7 +3539,7 @@ OnPacketsLost(lost_packets):
 longer count toward bytes in flight.<a href="#appendix-B.9-1" class="pilcrow">¶</a></p>
 <p id="appendix-B.9-2">Pseudocode for RemoveFromBytesInFlight follows:<a href="#appendix-B.9-2" class="pilcrow">¶</a></p>
 <div id="appendix-B.9-3">
-<pre class="sourcecode lang-pseudocode">
+<pre class="lang-pseudocode sourcecode">
 RemoveFromBytesInFlight(discarded_packets):
   // Remove any unacknowledged packets from flight.
   foreach packet in discarded_packets:

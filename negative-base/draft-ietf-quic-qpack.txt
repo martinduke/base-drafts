@@ -5,10 +5,10 @@
 QUIC                                                           C. Krasic
 Internet-Draft                                                   Netflix
 Intended status: Standards Track                               M. Bishop
-Expires: 24 February 2022                            Akamai Technologies
+Expires: 7 April 2022                                Akamai Technologies
                                                         A. Frindell, Ed.
                                                                 Facebook
-                                                          23 August 2021
+                                                          4 October 2021
 
 
                   QPACK: Header Compression for HTTP/3
@@ -36,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 24 February 2022.
+   This Internet-Draft will expire on 7 April 2022.
 
 Copyright Notice
 
@@ -955,13 +955,13 @@ Table of Contents
       else:
          EncInsertCount = (ReqInsertCount mod (2 * MaxEntries)) + 1
 
-   Here "MaxEntries" is the maximum number of entries that the dynamic
+   Here MaxEntries is the maximum number of entries that the dynamic
    table can have.  The smallest entry has empty name and value strings
-   and has the size of 32.  Hence "MaxEntries" is calculated as
+   and has the size of 32.  Hence MaxEntries is calculated as
 
       MaxEntries = floor( MaxTableCapacity / 32 )
 
-   "MaxTableCapacity" is the maximum capacity of the dynamic table as
+   MaxTableCapacity is the maximum capacity of the dynamic table as
    specified by the decoder; see Section 3.2.3.
 
    This encoding limits the length of the prefix on long-lived
@@ -1034,6 +1034,12 @@ Table of Contents
    the table and did not insert any new entries, the Base will be
    greater than the Required Insert Count, so the delta will be positive
    and the sign bit is set to 0.
+
+   The value of Base MUST NOT be negative.  Though the protocol might
+   operate correctly with a negative base using post-base indexing, it
+   is unnecessary and inefficient.  An endpoint MUST treat a field block
+   with an S bit of 1 as invalid if the value of Required Insert Count
+   is less than or equal to the value of Delta Base.
 
    An encoder that produces table updates before encoding a field
    section might set Base to the value of Required Insert Count.  In
@@ -1527,14 +1533,14 @@ Table of Contents
 
    [HTTP3]    Bishop, M., Ed., "Hypertext Transfer Protocol Version 3
               (HTTP/3)", Work in Progress, Internet-Draft, draft-ietf-
-              quic-http, 23 August 2021,
+              quic-http, 4 October 2021,
               <https://datatracker.ietf.org/doc/html/draft-ietf-quic-
               http>.
 
    [QUIC-TRANSPORT]
               Iyengar, J., Ed. and M. Thomson, Ed., "QUIC: A UDP-Based
               Multiplexed and Secure Transport", RFC 9000,
-              DOI 10.17487/RFC9000, 23 August 2021,
+              DOI 10.17487/RFC9000, 4 October 2021,
               <https://datatracker.ietf.org/doc/html/rfc9000>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
@@ -1557,9 +1563,9 @@ Table of Contents
    [SEMANTICS]
               Fielding, R. T., Nottingham, M., and J. Reschke, "HTTP
               Semantics", Work in Progress, Internet-Draft, draft-ietf-
-              httpbis-semantics-18, 18 August 2021,
+              httpbis-semantics-19, 12 September 2021,
               <https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-
-              semantics-18>.
+              semantics-19>.
 
 9.2.  Informative References
 

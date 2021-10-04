@@ -2066,7 +2066,7 @@ Table of Contents
    privacy, referred to as "Hide Nonce" (HN) transforms.  The general
    header protection construction in this document is one of those
    algorithms (HN1).  Header protection is applied after the packet
-   protection AEAD, sampling a set of bytes ("sample") from the AEAD
+   protection AEAD, sampling a set of bytes (sample) from the AEAD
    output and encrypting the header field using a pseudorandom function
    (PRF) as follows:
 
@@ -2077,9 +2077,9 @@ Table of Contents
    are also PRFs [IMC], these variants do not deviate from the HN1
    construction.
 
-   As "hp_key" is distinct from the packet protection key, it follows
-   that header protection achieves AE2 security as defined in [NAN] and
-   therefore guarantees privacy of "field", the protected packet header.
+   As hp_key is distinct from the packet protection key, it follows that
+   header protection achieves AE2 security as defined in [NAN] and
+   therefore guarantees privacy of field, the protected packet header.
    Future header protection variants based on this construction MUST use
    a PRF to ensure equivalent security guarantees.
 
@@ -2298,7 +2298,7 @@ Table of Contents
    [QUIC-HTTP]
               Bishop, M., Ed., "Hypertext Transfer Protocol Version 3
               (HTTP/3)", Work in Progress, Internet-Draft, draft-ietf-
-              quic-http, 19 August 2021,
+              quic-http, 4 October 2021,
               <https://datatracker.ietf.org/doc/html/draft-ietf-quic-
               http>.
 
@@ -2599,8 +2599,8 @@ Appendix B.  AEAD Algorithm Analysis
    the sum of the following: the length of the associated data in
    blocks, the length of the ciphertext in blocks, the length of the
    plaintext in blocks, plus 1.  In this analysis, this is simplified to
-   a value of twice the length of the packet in blocks (that is, "2l =
-   2^8" for packets that are limited to 2^11 bytes, or "2l = 2^13"
+   a value of twice the length of the packet in blocks (that is, 2l =
+   2^8 for packets that are limited to 2^11 bytes, or 2l = 2^13
    otherwise).  This simplification is based on the packet containing
    all of the associated data and ciphertext.  This results in a one to
    three block overestimation of the number of operations per packet.
@@ -2698,9 +2698,9 @@ B.2.  Analysis of AEAD_AES_128_CCM Usage Limits
 
    v / 2^t + (2l * (v + q))^2 / 2^n
 
-   As "t" and "n" are both 128, the first term is negligible relative to
-   the second, so that term can be removed without a significant effect
-   on the result.
+   As t and n are both 128, the first term is negligible relative to the
+   second, so that term can be removed without a significant effect on
+   the result.
 
    This produces a relation that combines both encryption and decryption
    attempts with the same limit as that produced by the theorem for
@@ -2709,7 +2709,7 @@ B.2.  Analysis of AEAD_AES_128_CCM Usage Limits
 
    v + q <= 2^34.5 / l
 
-   By setting "q = v", values for both confidentiality and integrity
+   By setting q = v, values for both confidentiality and integrity
    limits can be produced.  Endpoints that limit packets to 2^11 bytes
    therefore have both confidentiality and integrity limits of 2^26.5
    packets.  Endpoints that do not restrict packet size have a limit of

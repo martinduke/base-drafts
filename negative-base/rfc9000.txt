@@ -1201,12 +1201,11 @@ Table of Contents
 4.6.  Controlling Concurrency
 
    An endpoint limits the cumulative number of incoming streams a peer
-   can open.  Only streams with a stream ID less than "(max_streams * 4
-   + first_stream_id_of_type)" can be opened; see Table 1.  Initial
-   limits are set in the transport parameters; see Section 18.2.
-   Subsequent limits are advertised using MAX_STREAMS frames; see
-   Section 19.11.  Separate limits apply to unidirectional and
-   bidirectional streams.
+   can open.  Only streams with a stream ID less than (max_streams * 4 +
+   first_stream_id_of_type) can be opened; see Table 1.  Initial limits
+   are set in the transport parameters; see Section 18.2.  Subsequent
+   limits are advertised using MAX_STREAMS frames; see Section 19.11.
+   Separate limits apply to unidirectional and bidirectional streams.
 
    If a max_streams transport parameter or a MAX_STREAMS frame is
    received with a value greater than 2^60, this would allow a maximum
@@ -1979,18 +1978,17 @@ Table of Contents
          Figure 8: Use of Connection IDs in a Handshake with Retry
 
    In both cases (Figures 7 and 8), the client sets the value of the
-   initial_source_connection_id transport parameter to "C1".
+   initial_source_connection_id transport parameter to C1.
 
    When the handshake does not include a Retry (Figure 7), the server
-   sets original_destination_connection_id to "S1" (note that this value
-   is chosen by the client) and initial_source_connection_id to "S3".
-   In this case, the server does not include a
-   retry_source_connection_id transport parameter.
+   sets original_destination_connection_id to S1 (note that this value
+   is chosen by the client) and initial_source_connection_id to S3.  In
+   this case, the server does not include a retry_source_connection_id
+   transport parameter.
 
    When the handshake includes a Retry (Figure 8), the server sets
-   original_destination_connection_id to "S1",
-   retry_source_connection_id to "S2", and initial_source_connection_id
-   to "S3".
+   original_destination_connection_id to S1, retry_source_connection_id
+   to S2, and initial_source_connection_id to S3.
 
 7.4.  Transport Parameters
 
@@ -5636,7 +5634,7 @@ Table of Contents
 
 18.1.  Reserved Transport Parameters
 
-   Transport parameters with an identifier of the form "31 * N + 27" for
+   Transport parameters with an identifier of the form 31 * N + 27 for
    integer values of N are reserved to exercise the requirement that
    unknown transport parameters be ignored.  These transport parameters
    have no semantics and can carry arbitrary values.
@@ -7905,9 +7903,9 @@ Table of Contents
 
         Table 6: Initial QUIC Transport Parameters Registry Entries
 
-   Each value of the form "31 * N + 27" for integer values of N (that
-   is, 27, 58, 89, ...) are reserved; these values MUST NOT be assigned
-   by IANA and MUST NOT appear in the listing of assigned values.
+   Each value of the form 31 * N + 27 for integer values of N (that is,
+   27, 58, 89, ...) are reserved; these values MUST NOT be assigned by
+   IANA and MUST NOT appear in the listing of assigned values.
 
 22.4.  QUIC Frame Types Registry
 
@@ -8175,9 +8173,9 @@ Table of Contents
    [QUIC-MANAGEABILITY]
               Kuehlewind, M. and B. Trammell, "Manageability of the QUIC
               Transport Protocol", Work in Progress, Internet-Draft,
-              draft-ietf-quic-manageability-12, 30 June 2021,
+              draft-ietf-quic-manageability-13, 2 September 2021,
               <https://datatracker.ietf.org/doc/html/draft-ietf-quic-
-              manageability-12>.
+              manageability-13>.
 
    [RANDOM]   Eastlake 3rd, D., Schiller, J., and S. Crocker,
               "Randomness Requirements for Security", BCP 106, RFC 4086,

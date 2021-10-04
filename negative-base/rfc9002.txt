@@ -1170,14 +1170,14 @@ Table of Contents
                                  Table 1
 
    Packets 2 through 8 are declared lost when the acknowledgment for
-   packet 9 is received at "t = 12.2".
+   packet 9 is received at t = 12.2.
 
    The congestion period is calculated as the time between the oldest
-   and newest lost packets: "8 - 1 = 7".  The persistent congestion
-   duration is "2 * 3 = 6".  Because the threshold was reached and
-   because none of the packets between the oldest and the newest lost
-   packets were acknowledged, the network is considered to have
-   experienced persistent congestion.
+   and newest lost packets: 8 - 1 = 7.  The persistent congestion
+   duration is 2 * 3 = 6.  Because the threshold was reached and because
+   none of the packets between the oldest and the newest lost packets
+   were acknowledged, the network is considered to have experienced
+   persistent congestion.
 
    While this example shows PTO expiration, they are not required for
    persistent congestion to be established.
@@ -1217,9 +1217,9 @@ Table of Contents
 
    interval = ( smoothed_rtt * packet_size / congestion_window ) / N
 
-   Using a value for "N" that is small, but at least 1 (for example,
-   1.25) ensures that variations in RTT do not result in
-   underutilization of the congestion window.
+   Using a value for N that is small, but at least 1 (for example, 1.25)
+   ensures that variations in RTT do not result in underutilization of
+   the congestion window.
 
    Practical considerations, such as packetization, scheduling delays,
    and computational efficiency, can cause a sender to deviate from this

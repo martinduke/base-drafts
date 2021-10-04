@@ -13,10 +13,10 @@ low-latency connection establishment.  This document describes a mapping of HTTP
 semantics over QUIC.  This document also identifies HTTP/2 features that are
 subsumed by QUIC, and describes how HTTP/2 extensions can be ported to HTTP/3. 
     " name="description">
-<meta content="xml2rfc 3.9.1" name="generator">
+<meta content="xml2rfc 3.10.0" name="generator">
 <meta content="draft-ietf-quic-http" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.9.1
+  xml2rfc 3.10.0
     Python 3.9.5
     appdirs 1.4.4
     ConfigArgParse 1.3
@@ -272,10 +272,15 @@ h4, h5, h6 {
 .author {
   padding-bottom: 0.3em;
 }
-#abstract+p, #abstract+p code, #abstract+p samp, #abstract+p tt {
+#abstract+p {
   font-size: 18px;
   line-height: 24px;
 }
+#abstract+p code, #abstract+p samp, #abstract+p tt {
+  font-size: 16px;
+  line-height: 0;
+}
+
 p {
   padding: 0;
   margin: 0.5em 0;
@@ -407,6 +412,12 @@ a.xref {
 tt, code, pre {
   background-color: var(--highlight-color);
   font: 14px/22px 'Oxygen Mono', monospace;
+}
+tt, code {
+  /* changing the font for inline elements leads to different ascender
+     and descender heights; as we want to retain baseline alignment,
+     remove leading to avoid altering the final height of lines */
+  line-height: 0;
 }
 pre {
   border: 1px solid var(--line-color);
@@ -1009,11 +1020,11 @@ address div.right {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">HTTP/3</td>
-<td class="right">August 2021</td>
+<td class="right">October 2021</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Bishop</td>
-<td class="center">Expires 24 February 2022</td>
+<td class="center">Expires 7 April 2022</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1026,12 +1037,12 @@ address div.right {
 <dd class="internet-draft">draft-ietf-quic-http</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2021-08-23" class="published">23 August 2021</time>
+<time datetime="2021-10-04" class="published">4 October 2021</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2022-02-24">24 February 2022</time></dd>
+<dd class="expires"><time datetime="2022-04-07">7 April 2022</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1070,7 +1081,7 @@ subsumed by QUIC, and describes how HTTP/2 extensions can be ported to HTTP/3.<a
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 24 February 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 7 April 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1098,291 +1109,291 @@ subsumed by QUIC, and describes how HTTP/2 extensions can be ported to HTTP/3.<a
         <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
 <a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
         </h2>
-<nav class="toc"><ul class="compact ulBare ulEmpty toc">
-<li class="compact ulBare ulEmpty toc" id="section-toc.1-1.1">
+<nav class="toc"><ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
             <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="xref">1</a>.  <a href="#name-introduction" class="xref">Introduction</a></p>
-<ul class="compact ulBare ulEmpty toc">
-<li class="compact ulBare ulEmpty toc" id="section-toc.1-1.1.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.1">
                 <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="xref">1.1</a>.  <a href="#name-prior-versions-of-http" class="xref">Prior versions of HTTP</a></p>
 </li>
-              <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.1.2.2">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.2">
                 <p id="section-toc.1-1.1.2.2.1" class="keepWithNext"><a href="#section-1.2" class="xref">1.2</a>.  <a href="#name-delegation-to-quic" class="xref">Delegation to QUIC</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.2">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
             <p id="section-toc.1-1.2.1"><a href="#section-2" class="xref">2</a>.  <a href="#name-http-3-protocol-overview" class="xref">HTTP/3 Protocol Overview</a></p>
-<ul class="compact ulBare ulEmpty toc">
-<li class="compact ulBare ulEmpty toc" id="section-toc.1-1.2.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1">
                 <p id="section-toc.1-1.2.2.1.1"><a href="#section-2.1" class="xref">2.1</a>.  <a href="#name-document-organization" class="xref">Document Organization</a></p>
 </li>
-              <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.2.2.2">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2">
                 <p id="section-toc.1-1.2.2.2.1"><a href="#section-2.2" class="xref">2.2</a>.  <a href="#name-conventions-and-terminology" class="xref">Conventions and Terminology</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.3">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
             <p id="section-toc.1-1.3.1"><a href="#section-3" class="xref">3</a>.  <a href="#name-connection-setup-and-manage" class="xref">Connection Setup and Management</a></p>
-<ul class="compact ulBare ulEmpty toc">
-<li class="compact ulBare ulEmpty toc" id="section-toc.1-1.3.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
                 <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="xref">3.1</a>.  <a href="#name-discovering-an-http-3-endpo" class="xref">Discovering an HTTP/3 Endpoint</a></p>
-<ul class="compact ulBare ulEmpty toc">
-<li class="compact ulBare ulEmpty toc" id="section-toc.1-1.3.2.1.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1.2.1">
                     <p id="section-toc.1-1.3.2.1.2.1.1"><a href="#section-3.1.1" class="xref">3.1.1</a>.  <a href="#name-http-alternative-services" class="xref">HTTP Alternative Services</a></p>
 </li>
-                  <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.3.2.1.2.2">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1.2.2">
                     <p id="section-toc.1-1.3.2.1.2.2.1"><a href="#section-3.1.2" class="xref">3.1.2</a>.  <a href="#name-other-schemes" class="xref">Other Schemes</a></p>
 </li>
                 </ul>
 </li>
-              <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.3.2.2">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
                 <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="xref">3.2</a>.  <a href="#name-connection-establishment" class="xref">Connection Establishment</a></p>
 </li>
-              <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.3.2.3">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
                 <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="xref">3.3</a>.  <a href="#name-connection-reuse" class="xref">Connection Reuse</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.4">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="xref">4</a>.  <a href="#name-http-request-lifecycle" class="xref">HTTP Request Lifecycle</a></p>
-<ul class="compact ulBare ulEmpty toc">
-<li class="compact ulBare ulEmpty toc" id="section-toc.1-1.4.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
                 <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="xref">4.1</a>.  <a href="#name-http-message-exchanges" class="xref">HTTP Message Exchanges</a></p>
-<ul class="compact ulBare ulEmpty toc">
-<li class="compact ulBare ulEmpty toc" id="section-toc.1-1.4.2.1.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1.2.1">
                     <p id="section-toc.1-1.4.2.1.2.1.1"><a href="#section-4.1.1" class="xref">4.1.1</a>.  <a href="#name-field-formatting-and-compre" class="xref">Field Formatting and Compression</a></p>
 </li>
-                  <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.4.2.1.2.2">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1.2.2">
                     <p id="section-toc.1-1.4.2.1.2.2.1"><a href="#section-4.1.2" class="xref">4.1.2</a>.  <a href="#name-request-cancellation-and-re" class="xref">Request Cancellation and Rejection</a></p>
 </li>
-                  <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.4.2.1.2.3">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1.2.3">
                     <p id="section-toc.1-1.4.2.1.2.3.1"><a href="#section-4.1.3" class="xref">4.1.3</a>.  <a href="#name-malformed-requests-and-resp" class="xref">Malformed Requests and Responses</a></p>
 </li>
                 </ul>
 </li>
-              <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.4.2.2">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
                 <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="xref">4.2</a>.  <a href="#name-the-connect-method" class="xref">The CONNECT Method</a></p>
 </li>
-              <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.4.2.3">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
                 <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="xref">4.3</a>.  <a href="#name-http-upgrade" class="xref">HTTP Upgrade</a></p>
 </li>
-              <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.4.2.4">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4">
                 <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="xref">4.4</a>.  <a href="#name-server-push" class="xref">Server Push</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.5">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="xref">5</a>.  <a href="#name-connection-closure" class="xref">Connection Closure</a></p>
-<ul class="compact ulBare ulEmpty toc">
-<li class="compact ulBare ulEmpty toc" id="section-toc.1-1.5.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
                 <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="xref">5.1</a>.  <a href="#name-idle-connections" class="xref">Idle Connections</a></p>
 </li>
-              <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.5.2.2">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
                 <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="xref">5.2</a>.  <a href="#name-connection-shutdown" class="xref">Connection Shutdown</a></p>
 </li>
-              <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.5.2.3">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3">
                 <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="xref">5.3</a>.  <a href="#name-immediate-application-closu" class="xref">Immediate Application Closure</a></p>
 </li>
-              <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.5.2.4">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.4">
                 <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="xref">5.4</a>.  <a href="#name-transport-closure" class="xref">Transport Closure</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.6">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="xref">6</a>.  <a href="#name-stream-mapping-and-usage" class="xref">Stream Mapping and Usage</a></p>
-<ul class="compact ulBare ulEmpty toc">
-<li class="compact ulBare ulEmpty toc" id="section-toc.1-1.6.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
                 <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="xref">6.1</a>.  <a href="#name-bidirectional-streams" class="xref">Bidirectional Streams</a></p>
 </li>
-              <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.6.2.2">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
                 <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="xref">6.2</a>.  <a href="#name-unidirectional-streams" class="xref">Unidirectional Streams</a></p>
-<ul class="compact ulBare ulEmpty toc">
-<li class="compact ulBare ulEmpty toc" id="section-toc.1-1.6.2.2.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2.2.1">
                     <p id="section-toc.1-1.6.2.2.2.1.1"><a href="#section-6.2.1" class="xref">6.2.1</a>.  <a href="#name-control-streams" class="xref">Control Streams</a></p>
 </li>
-                  <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.6.2.2.2.2">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2.2.2">
                     <p id="section-toc.1-1.6.2.2.2.2.1"><a href="#section-6.2.2" class="xref">6.2.2</a>.  <a href="#name-push-streams" class="xref">Push Streams</a></p>
 </li>
-                  <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.6.2.2.2.3">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2.2.3">
                     <p id="section-toc.1-1.6.2.2.2.3.1"><a href="#section-6.2.3" class="xref">6.2.3</a>.  <a href="#name-reserved-stream-types" class="xref">Reserved Stream Types</a></p>
 </li>
                 </ul>
 </li>
             </ul>
 </li>
-          <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.7">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
             <p id="section-toc.1-1.7.1"><a href="#section-7" class="xref">7</a>.  <a href="#name-http-framing-layer" class="xref">HTTP Framing Layer</a></p>
-<ul class="compact ulBare ulEmpty toc">
-<li class="compact ulBare ulEmpty toc" id="section-toc.1-1.7.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
                 <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="xref">7.1</a>.  <a href="#name-frame-layout" class="xref">Frame Layout</a></p>
 </li>
-              <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.7.2.2">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
                 <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="xref">7.2</a>.  <a href="#name-frame-definitions" class="xref">Frame Definitions</a></p>
-<ul class="compact ulBare ulEmpty toc">
-<li class="compact ulBare ulEmpty toc" id="section-toc.1-1.7.2.2.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2.2.1">
                     <p id="section-toc.1-1.7.2.2.2.1.1"><a href="#section-7.2.1" class="xref">7.2.1</a>.  <a href="#name-data" class="xref">DATA</a></p>
 </li>
-                  <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.7.2.2.2.2">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2.2.2">
                     <p id="section-toc.1-1.7.2.2.2.2.1"><a href="#section-7.2.2" class="xref">7.2.2</a>.  <a href="#name-headers" class="xref">HEADERS</a></p>
 </li>
-                  <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.7.2.2.2.3">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2.2.3">
                     <p id="section-toc.1-1.7.2.2.2.3.1"><a href="#section-7.2.3" class="xref">7.2.3</a>.  <a href="#name-cancel_push" class="xref">CANCEL_PUSH</a></p>
 </li>
-                  <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.7.2.2.2.4">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2.2.4">
                     <p id="section-toc.1-1.7.2.2.2.4.1"><a href="#section-7.2.4" class="xref">7.2.4</a>.  <a href="#name-settings" class="xref">SETTINGS</a></p>
 </li>
-                  <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.7.2.2.2.5">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2.2.5">
                     <p id="section-toc.1-1.7.2.2.2.5.1"><a href="#section-7.2.5" class="xref">7.2.5</a>.  <a href="#name-push_promise" class="xref">PUSH_PROMISE</a></p>
 </li>
-                  <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.7.2.2.2.6">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2.2.6">
                     <p id="section-toc.1-1.7.2.2.2.6.1"><a href="#section-7.2.6" class="xref">7.2.6</a>.  <a href="#name-goaway" class="xref">GOAWAY</a></p>
 </li>
-                  <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.7.2.2.2.7">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2.2.7">
                     <p id="section-toc.1-1.7.2.2.2.7.1"><a href="#section-7.2.7" class="xref">7.2.7</a>.  <a href="#name-max_push_id" class="xref">MAX_PUSH_ID</a></p>
 </li>
-                  <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.7.2.2.2.8">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2.2.8">
                     <p id="section-toc.1-1.7.2.2.2.8.1"><a href="#section-7.2.8" class="xref">7.2.8</a>.  <a href="#name-reserved-frame-types" class="xref">Reserved Frame Types</a></p>
 </li>
                 </ul>
 </li>
             </ul>
 </li>
-          <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.8">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
             <p id="section-toc.1-1.8.1"><a href="#section-8" class="xref">8</a>.  <a href="#name-error-handling" class="xref">Error Handling</a></p>
-<ul class="compact ulBare ulEmpty toc">
-<li class="compact ulBare ulEmpty toc" id="section-toc.1-1.8.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1">
                 <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="xref">8.1</a>.  <a href="#name-http-3-error-codes" class="xref">HTTP/3 Error Codes</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.9">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
             <p id="section-toc.1-1.9.1"><a href="#section-9" class="xref">9</a>.  <a href="#name-extensions-to-http-3" class="xref">Extensions to HTTP/3</a></p>
 </li>
-          <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.10">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
             <p id="section-toc.1-1.10.1"><a href="#section-10" class="xref">10</a>. <a href="#name-security-considerations" class="xref">Security Considerations</a></p>
-<ul class="compact ulBare ulEmpty toc">
-<li class="compact ulBare ulEmpty toc" id="section-toc.1-1.10.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.1">
                 <p id="section-toc.1-1.10.2.1.1"><a href="#section-10.1" class="xref">10.1</a>.  <a href="#name-server-authority" class="xref">Server Authority</a></p>
 </li>
-              <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.10.2.2">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.2">
                 <p id="section-toc.1-1.10.2.2.1"><a href="#section-10.2" class="xref">10.2</a>.  <a href="#name-cross-protocol-attacks" class="xref">Cross-Protocol Attacks</a></p>
 </li>
-              <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.10.2.3">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.3">
                 <p id="section-toc.1-1.10.2.3.1"><a href="#section-10.3" class="xref">10.3</a>.  <a href="#name-intermediary-encapsulation-" class="xref">Intermediary Encapsulation Attacks</a></p>
 </li>
-              <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.10.2.4">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.4">
                 <p id="section-toc.1-1.10.2.4.1"><a href="#section-10.4" class="xref">10.4</a>.  <a href="#name-cacheability-of-pushed-resp" class="xref">Cacheability of Pushed Responses</a></p>
 </li>
-              <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.10.2.5">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.5">
                 <p id="section-toc.1-1.10.2.5.1"><a href="#section-10.5" class="xref">10.5</a>.  <a href="#name-denial-of-service-considera" class="xref">Denial-of-Service Considerations</a></p>
-<ul class="compact ulBare ulEmpty toc">
-<li class="compact ulBare ulEmpty toc" id="section-toc.1-1.10.2.5.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.5.2.1">
                     <p id="section-toc.1-1.10.2.5.2.1.1"><a href="#section-10.5.1" class="xref">10.5.1</a>.  <a href="#name-limits-on-field-section-siz" class="xref">Limits on Field Section Size</a></p>
 </li>
-                  <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.10.2.5.2.2">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.5.2.2">
                     <p id="section-toc.1-1.10.2.5.2.2.1"><a href="#section-10.5.2" class="xref">10.5.2</a>.  <a href="#name-connect-issues" class="xref">CONNECT Issues</a></p>
 </li>
                 </ul>
 </li>
-              <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.10.2.6">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.6">
                 <p id="section-toc.1-1.10.2.6.1"><a href="#section-10.6" class="xref">10.6</a>.  <a href="#name-use-of-compression" class="xref">Use of Compression</a></p>
 </li>
-              <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.10.2.7">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.7">
                 <p id="section-toc.1-1.10.2.7.1"><a href="#section-10.7" class="xref">10.7</a>.  <a href="#name-padding-and-traffic-analysi" class="xref">Padding and Traffic Analysis</a></p>
 </li>
-              <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.10.2.8">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.8">
                 <p id="section-toc.1-1.10.2.8.1"><a href="#section-10.8" class="xref">10.8</a>.  <a href="#name-frame-parsing" class="xref">Frame Parsing</a></p>
 </li>
-              <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.10.2.9">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.9">
                 <p id="section-toc.1-1.10.2.9.1"><a href="#section-10.9" class="xref">10.9</a>.  <a href="#name-early-data" class="xref">Early Data</a></p>
 </li>
-              <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.10.2.10">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.10">
                 <p id="section-toc.1-1.10.2.10.1"><a href="#section-10.10" class="xref">10.10</a>. <a href="#name-migration" class="xref">Migration</a></p>
 </li>
-              <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.10.2.11">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.11">
                 <p id="section-toc.1-1.10.2.11.1"><a href="#section-10.11" class="xref">10.11</a>. <a href="#name-privacy-considerations" class="xref">Privacy Considerations</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.11">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
             <p id="section-toc.1-1.11.1"><a href="#section-11" class="xref">11</a>. <a href="#name-iana-considerations" class="xref">IANA Considerations</a></p>
-<ul class="compact ulBare ulEmpty toc">
-<li class="compact ulBare ulEmpty toc" id="section-toc.1-1.11.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.1">
                 <p id="section-toc.1-1.11.2.1.1"><a href="#section-11.1" class="xref">11.1</a>.  <a href="#name-registration-of-http-3-iden" class="xref">Registration of HTTP/3 Identification String</a></p>
 </li>
-              <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.11.2.2">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.2">
                 <p id="section-toc.1-1.11.2.2.1"><a href="#section-11.2" class="xref">11.2</a>.  <a href="#name-new-registries" class="xref">New Registries</a></p>
-<ul class="compact ulBare ulEmpty toc">
-<li class="compact ulBare ulEmpty toc" id="section-toc.1-1.11.2.2.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.2.2.1">
                     <p id="section-toc.1-1.11.2.2.2.1.1"><a href="#section-11.2.1" class="xref">11.2.1</a>.  <a href="#name-frame-types" class="xref">Frame Types</a></p>
 </li>
-                  <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.11.2.2.2.2">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.2.2.2">
                     <p id="section-toc.1-1.11.2.2.2.2.1"><a href="#section-11.2.2" class="xref">11.2.2</a>.  <a href="#name-settings-parameters" class="xref">Settings Parameters</a></p>
 </li>
-                  <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.11.2.2.2.3">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.2.2.3">
                     <p id="section-toc.1-1.11.2.2.2.3.1"><a href="#section-11.2.3" class="xref">11.2.3</a>.  <a href="#name-error-codes" class="xref">Error Codes</a></p>
 </li>
-                  <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.11.2.2.2.4">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.2.2.4">
                     <p id="section-toc.1-1.11.2.2.2.4.1"><a href="#section-11.2.4" class="xref">11.2.4</a>.  <a href="#name-stream-types" class="xref">Stream Types</a></p>
 </li>
                 </ul>
 </li>
             </ul>
 </li>
-          <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.12">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
             <p id="section-toc.1-1.12.1"><a href="#section-12" class="xref">12</a>. <a href="#name-references" class="xref">References</a></p>
-<ul class="compact ulBare ulEmpty toc">
-<li class="compact ulBare ulEmpty toc" id="section-toc.1-1.12.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.1">
                 <p id="section-toc.1-1.12.2.1.1"><a href="#section-12.1" class="xref">12.1</a>.  <a href="#name-normative-references" class="xref">Normative References</a></p>
 </li>
-              <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.12.2.2">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.2">
                 <p id="section-toc.1-1.12.2.2.1"><a href="#section-12.2" class="xref">12.2</a>.  <a href="#name-informative-references" class="xref">Informative References</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.13">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
             <p id="section-toc.1-1.13.1"><a href="#appendix-A" class="xref">Appendix A</a>.  <a href="#name-considerations-for-transiti" class="xref">Considerations for Transitioning from HTTP/2</a></p>
-<ul class="compact ulBare ulEmpty toc">
-<li class="compact ulBare ulEmpty toc" id="section-toc.1-1.13.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.1">
                 <p id="section-toc.1-1.13.2.1.1"><a href="#appendix-A.1" class="xref">A.1</a>.  <a href="#name-streams" class="xref">Streams</a></p>
 </li>
-              <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.13.2.2">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.2">
                 <p id="section-toc.1-1.13.2.2.1"><a href="#appendix-A.2" class="xref">A.2</a>.  <a href="#name-http-frame-types" class="xref">HTTP Frame Types</a></p>
-<ul class="compact ulBare ulEmpty toc">
-<li class="compact ulBare ulEmpty toc" id="section-toc.1-1.13.2.2.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.2.2.1">
                     <p id="section-toc.1-1.13.2.2.2.1.1"><a href="#appendix-A.2.1" class="xref">A.2.1</a>.  <a href="#name-prioritization-differences" class="xref">Prioritization Differences</a></p>
 </li>
-                  <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.13.2.2.2.2">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.2.2.2">
                     <p id="section-toc.1-1.13.2.2.2.2.1"><a href="#appendix-A.2.2" class="xref">A.2.2</a>.  <a href="#name-field-compression-differenc" class="xref">Field Compression Differences</a></p>
 </li>
-                  <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.13.2.2.2.3">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.2.2.3">
                     <p id="section-toc.1-1.13.2.2.2.3.1"><a href="#appendix-A.2.3" class="xref">A.2.3</a>.  <a href="#name-flow-control-differences" class="xref">Flow Control Differences</a></p>
 </li>
-                  <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.13.2.2.2.4">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.2.2.4">
                     <p id="section-toc.1-1.13.2.2.2.4.1"><a href="#appendix-A.2.4" class="xref">A.2.4</a>.  <a href="#name-guidance-for-new-frame-type" class="xref">Guidance for New Frame Type Definitions</a></p>
 </li>
-                  <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.13.2.2.2.5">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.2.2.5">
                     <p id="section-toc.1-1.13.2.2.2.5.1"><a href="#appendix-A.2.5" class="xref">A.2.5</a>.  <a href="#name-comparison-between-http-2-a" class="xref">Comparison Between HTTP/2 and HTTP/3 Frame Types</a></p>
 </li>
                 </ul>
 </li>
-              <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.13.2.3">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.3">
                 <p id="section-toc.1-1.13.2.3.1"><a href="#appendix-A.3" class="xref">A.3</a>.  <a href="#name-http-2-settings-parameters" class="xref">HTTP/2 SETTINGS Parameters</a></p>
 </li>
-              <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.13.2.4">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.4">
                 <p id="section-toc.1-1.13.2.4.1"><a href="#appendix-A.4" class="xref">A.4</a>.  <a href="#name-http-2-error-codes" class="xref">HTTP/2 Error Codes</a></p>
-<ul class="compact ulBare ulEmpty toc">
-<li class="compact ulBare ulEmpty toc" id="section-toc.1-1.13.2.4.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.4.2.1">
                     <p id="section-toc.1-1.13.2.4.2.1.1"><a href="#appendix-A.4.1" class="xref">A.4.1</a>.  <a href="#name-mapping-between-http-2-and-" class="xref">Mapping Between HTTP/2 and HTTP/3 Errors</a></p>
 </li>
                 </ul>
 </li>
             </ul>
 </li>
-          <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.14">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14">
             <p id="section-toc.1-1.14.1"><a href="#appendix-B" class="xref"></a><a href="#name-acknowledgments" class="xref">Acknowledgments</a></p>
 </li>
-          <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.15">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15">
             <p id="section-toc.1-1.15.1"><a href="#appendix-C" class="xref"></a><a href="#name-authors-address" class="xref">Author's Address</a></p>
 </li>
         </ul>
@@ -1613,9 +1624,9 @@ but multiple stream types are defined within HTTP/3.<a href="#section-2.2-4.24.1
 </dd>
         <dd class="break"></dd>
 </dl>
-<p id="section-2.2-5">The term "content" is defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-6.4" class="relref">Section 6.4</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>.<a href="#section-2.2-5" class="pilcrow">¶</a></p>
+<p id="section-2.2-5">The term "content" is defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-6.4" class="relref">Section 6.4</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>.<a href="#section-2.2-5" class="pilcrow">¶</a></p>
 <p id="section-2.2-6">Finally, the terms "resource", "message", "user agent", "origin server",
-"gateway", "intermediary", "proxy", and "tunnel" are defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-3" class="relref">Section 3</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>.<a href="#section-2.2-6" class="pilcrow">¶</a></p>
+"gateway", "intermediary", "proxy", and "tunnel" are defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-3" class="relref">Section 3</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>.<a href="#section-2.2-6" class="pilcrow">¶</a></p>
 <p id="section-2.2-7">Packet diagrams in this document use the format defined in
 <span><a href="https://rfc-editor.org/rfc/rfc9000#section-1.3" class="relref">Section 1.3</a> of [<a href="#QUIC-TRANSPORT" class="xref">QUIC-TRANSPORT</a>]</span> to illustrate the order and size of fields.<a href="#section-2.2-7" class="pilcrow">¶</a></p>
 </section>
@@ -1637,12 +1648,12 @@ determined to be the most appropriate response for that request given the state
 of the target resource at the time of response message origination by (or at the
 direction of) the origin server identified within the target URI.  Locating an
 authoritative server for an HTTP URI is discussed in
-<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-4.3" class="relref">Section 4.3</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-4.3" class="relref">Section 4.3</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.1-2">The "https" scheme associates authority with possession of a certificate that
 the client considers to be trustworthy for the host identified by the authority
 component of the URI.  Upon receiving a server certificate in the TLS handshake,
 the client <span class="bcp14">MUST</span> verify that the certificate is an acceptable match for the URI's
-origin server using the process described in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-4.3.4" class="relref">Section 4.3.4</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>. If
+origin server using the process described in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-4.3.4" class="relref">Section 4.3.4</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>. If
 the certificate cannot be verified with respect to the URI's origin server, the
 client <span class="bcp14">MUST NOT</span> consider the server authoritative for that origin.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
 <p id="section-3.1-3">A client <span class="bcp14">MAY</span> attempt access to a resource with an "https" URI by resolving the
@@ -1670,7 +1681,7 @@ via the Alt-Svc HTTP response header field or the HTTP/2 ALTSVC frame
 available on UDP port 50781 at the same hostname by including the following
 header field:<a href="#section-3.1.1-2" class="pilcrow">¶</a></p>
 <div id="section-3.1.1-3">
-<pre class="sourcecode lang-example">
+<pre class="lang-example sourcecode">
 Alt-Svc: h3=":50781"
 </pre><a href="#section-3.1.1-3" class="pilcrow">¶</a>
 </div>
@@ -1739,7 +1750,7 @@ server closes the connection.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
 <p id="section-3.3-2">Once a connection exists to a server endpoint, this connection <span class="bcp14">MAY</span> be reused for
 requests with multiple different URI authority components.  To use an existing
 connection for a new origin, clients <span class="bcp14">MUST</span> validate the certificate presented by
-the server for the new origin server using the process described in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-4.3.4" class="relref">Section 4.3.4</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>.  This implies that clients will need to retain the
+the server for the new origin server using the process described in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-4.3.4" class="relref">Section 4.3.4</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>.  This implies that clients will need to retain the
 server certificate and any additional information needed to verify that
 certificate; clients which do not do so will be unable to reuse the connection
 for additional origins.<a href="#section-3.3-2" class="pilcrow">¶</a></p>
@@ -1765,7 +1776,7 @@ endpoints can reliably determine whether previously sent frames have been
 processed and gracefully complete or terminate any necessary remaining tasks.<a href="#section-3.3-5" class="pilcrow">¶</a></p>
 <p id="section-3.3-6">A server that does not wish clients to reuse HTTP/3 connections for a particular
 origin can indicate that it is not authoritative for a request by sending a 421
-(Misdirected Request) status code in response to the request; see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-7.4" class="relref">Section 7.4</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>.<a href="#section-3.3-6" class="pilcrow">¶</a></p>
+(Misdirected Request) status code in response to the request; see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-7.4" class="relref">Section 7.4</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>.<a href="#section-3.3-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1784,7 +1795,7 @@ origin can indicate that it is not authoritative for a request by sending a 421
 bidirectional QUIC stream; see <a href="#request-streams" class="xref">Section 6.1</a>.  A client <span class="bcp14">MUST</span> send only a
 single request on a given stream.  A server sends zero or more interim HTTP
 responses on the same stream as the request, followed by a single final HTTP
-response, as detailed below. See <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-15" class="relref">Section 15</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span> for a description
+response, as detailed below. See <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-15" class="relref">Section 15</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span> for a description
 of interim and final HTTP responses.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
 <p id="section-4.1-2">Pushed responses are sent on a server-initiated unidirectional QUIC stream; see
 <a href="#push-streams" class="xref">Section 6.2.2</a>.  A server sends zero or more interim HTTP responses, followed
@@ -1803,7 +1814,7 @@ response following a final HTTP response <span class="bcp14">MUST</span> be trea
           <li id="section-4.1-5.3">optionally, the trailer section, if present, sent as a single HEADERS frame.<a href="#section-4.1-5.3" class="pilcrow">¶</a>
 </li>
         </ol>
-<p id="section-4.1-6">Header and trailer sections are described in Sections <a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-6.3" class="relref">6.3</a> and <a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-6.5" class="relref">6.5</a> of <span>[<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>; the content is described in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-6.4" class="relref">Section 6.4</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>.<a href="#section-4.1-6" class="pilcrow">¶</a></p>
+<p id="section-4.1-6">Header and trailer sections are described in Sections <a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-6.3" class="relref">6.3</a> and <a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-6.5" class="relref">6.5</a> of <span>[<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>; the content is described in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-6.4" class="relref">Section 6.4</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>.<a href="#section-4.1-6" class="pilcrow">¶</a></p>
 <p id="section-4.1-7">Receipt of an invalid sequence of frames <span class="bcp14">MUST</span> be treated as a connection error
 of type H3_FRAME_UNEXPECTED; see <a href="#errors" class="xref">Section 8</a>.  In particular, a DATA frame before
 any HEADERS frame, or a HEADERS or DATA frame after the trailing HEADERS frame,
@@ -1822,10 +1833,10 @@ interleaved with other frames described in this section.<a href="#section-4.1-9"
 table. While these updates are not directly part of the message exchange, they
 must be received and processed before the message can be consumed.  See
 <a href="#header-formatting" class="xref">Section 4.1.1</a> for more details.<a href="#section-4.1-10" class="pilcrow">¶</a></p>
-<p id="section-4.1-11">Transfer codings (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-messaging-18#section-7" class="relref">Section 7</a> of [<a href="#HTTP11" class="xref">HTTP11</a>]</span>) are not defined for HTTP/3;
+<p id="section-4.1-11">Transfer codings (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-messaging-19#section-6.1" class="relref">Section 6.1</a> of [<a href="#HTTP11" class="xref">HTTP11</a>]</span>) are not defined for HTTP/3;
 the Transfer-Encoding header field <span class="bcp14">MUST NOT</span> be used.<a href="#section-4.1-11" class="pilcrow">¶</a></p>
 <p id="section-4.1-12">A response <span class="bcp14">MAY</span> consist of multiple messages when and only when one or more
-interim responses (1xx; see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-15.2" class="relref">Section 15.2</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>) precede a final
+interim responses (1xx; see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-15.2" class="relref">Section 15.2</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>) precede a final
 response to the same request.  Interim responses do not contain content
 or trailer sections.<a href="#section-4.1-12" class="pilcrow">¶</a></p>
 <p id="section-4.1-13">An HTTP request/response exchange fully consumes a client-initiated
@@ -1857,11 +1868,11 @@ continue sending the body of the request and close the stream normally.<a href="
 <a href="#section-4.1.1" class="section-number selfRef">4.1.1. </a><a href="#name-field-formatting-and-compre" class="section-name selfRef">Field Formatting and Compression</a>
           </h4>
 <p id="section-4.1.1-1">HTTP messages carry metadata as a series of key-value pairs called HTTP fields;
-see Sections <a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-6.3" class="relref">6.3</a> and <a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-6.5" class="relref">6.5</a> of <span>[<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>. For a listing of registered HTTP
+see Sections <a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-6.3" class="relref">6.3</a> and <a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-6.5" class="relref">6.5</a> of <span>[<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>. For a listing of registered HTTP
 fields, see the "Hypertext Transfer Protocol (HTTP) Field Name Registry"
 maintained at <span><a href="https://www.iana.org/assignments/http-fields/">https://www.iana.org/assignments/http-fields/</a></span>.<a href="#section-4.1.1-1" class="pilcrow">¶</a></p>
 <p id="section-4.1.1-2">Field names are strings containing a subset of ASCII characters. Properties of
-HTTP field names and values are discussed in more detail in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-5.1" class="relref">Section 5.1</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>. As in HTTP/2, characters in field names <span class="bcp14">MUST</span> be converted to
+HTTP field names and values are discussed in more detail in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-5.1" class="relref">Section 5.1</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>. As in HTTP/2, characters in field names <span class="bcp14">MUST</span> be converted to
 lowercase prior to their encoding. A request or response containing uppercase
 characters in field names <span class="bcp14">MUST</span> be treated as malformed (<a href="#malformed" class="xref">Section 4.1.3</a>).<a href="#section-4.1.1-2" class="pilcrow">¶</a></p>
 <p id="section-4.1.1-3">Like HTTP/2, HTTP/3 does not use the Connection header field to indicate
@@ -1873,7 +1884,7 @@ connection-specific fields <span class="bcp14">MUST</span> be treated as malform
 HTTP/3 request header; when it is, it <span class="bcp14">MUST NOT</span> contain any value other than
 "trailers".<a href="#section-4.1.1-4" class="pilcrow">¶</a></p>
 <p id="section-4.1.1-5">An intermediary transforming an HTTP/1.x message to HTTP/3 <span class="bcp14">MUST</span> remove
-connection-specific header fields as discussed in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-7.6.1" class="relref">Section 7.6.1</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>, or their messages will be treated by other HTTP/3 endpoints as
+connection-specific header fields as discussed in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-7.6.1" class="relref">Section 7.6.1</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>, or their messages will be treated by other HTTP/3 endpoints as
 malformed (<a href="#malformed" class="xref">Section 4.1.3</a>).<a href="#section-4.1.1-5" class="pilcrow">¶</a></p>
 <div id="pseudo-header-fields">
 <section id="section-4.1.1.1">
@@ -1902,7 +1913,7 @@ malformed (<a href="#malformed" class="xref">Section 4.1.3</a>).<a href="#sectio
 <span class="break"></span><dl class="dlParallel" id="section-4.1.1.1-6">
               <dt id="section-4.1.1.1-6.1">":method":</dt>
               <dd style="margin-left: 1.5em" id="section-4.1.1.1-6.2">
-                <p id="section-4.1.1.1-6.2.1">Contains the HTTP method (<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-9" class="relref">Section 9</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>)<a href="#section-4.1.1.1-6.2.1" class="pilcrow">¶</a></p>
+                <p id="section-4.1.1.1-6.2.1">Contains the HTTP method (<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-9" class="relref">Section 9</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>)<a href="#section-4.1.1.1-6.2.1" class="pilcrow">¶</a></p>
 </dd>
               <dd class="break"></dd>
 <dt id="section-4.1.1.1-6.3">":scheme":</dt>
@@ -1934,7 +1945,7 @@ subcomponent for URIs of scheme "http" or "https".<a href="#section-4.1.1.1-6.10
               <dd style="margin-left: 1.5em" id="section-4.1.1.1-6.12">
                 <p id="section-4.1.1.1-6.12.1">To ensure that the HTTP/1.1 request line can be reproduced accurately, this
 pseudo-header field <span class="bcp14">MUST</span> be omitted when translating from an HTTP/1.1
-request that has a request target in origin or asterisk form; see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-7.1" class="relref">Section 7.1</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>.  Clients that generate HTTP/3 requests directly
+request that has a request target in origin or asterisk form; see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-7.1" class="relref">Section 7.1</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>.  Clients that generate HTTP/3 requests directly
 <span class="bcp14">SHOULD</span> use the ":authority" pseudo-header field instead of the Host field.
 An intermediary that converts an HTTP/3 request to HTTP/1.1 <span class="bcp14">MUST</span> create a
 Host field if one is not present in a request by copying the value of the
@@ -1956,7 +1967,7 @@ asterisk form includes the value '*' for the ":path" pseudo-header field.<a href
 value of '/'.  The exception to this rule is an OPTIONS request for an
 "http" or "https" URI that does not include a path component; these <span class="bcp14">MUST</span>
 include a ":path" pseudo-header field with a value of '*'; see
-<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-7.1" class="relref">Section 7.1</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>.<a href="#section-4.1.1.1-6.16.1" class="pilcrow">¶</a></p>
+<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-7.1" class="relref">Section 7.1</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>.<a href="#section-4.1.1.1-6.16.1" class="pilcrow">¶</a></p>
 </dd>
             <dd class="break"></dd>
 </dl>
@@ -1975,7 +1986,7 @@ values for those pseudo-header fields is malformed (<a href="#malformed" class="
 <p id="section-4.1.1.1-10">HTTP/3 does not define a way to carry the version identifier that is included in
 the HTTP/1.1 request line.<a href="#section-4.1.1.1-10" class="pilcrow">¶</a></p>
 <p id="section-4.1.1.1-11">For responses, a single ":status" pseudo-header field is defined that carries
-the HTTP status code; see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-15" class="relref">Section 15</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>.  This pseudo-header
+the HTTP status code; see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-15" class="relref">Section 15</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>.  This pseudo-header
 field <span class="bcp14">MUST</span> be included in all responses; otherwise, the response is malformed
 (<a href="#malformed" class="xref">Section 4.1.3</a>).<a href="#section-4.1.1.1-11" class="pilcrow">¶</a></p>
 <p id="section-4.1.1.1-12">HTTP/3 does not define a way to carry the version or reason phrase that is
@@ -2018,7 +2029,7 @@ as a number of bytes in the SETTINGS_MAX_FIELD_SECTION_SIZE parameter. An
 implementation that has received this parameter <span class="bcp14">SHOULD NOT</span> send an HTTP message
 header that exceeds the indicated size, as the peer will likely refuse to
 process it.  However, an HTTP message can traverse one or more intermediaries
-before reaching the origin server; see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-3.7" class="relref">Section 3.7</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>.  Because
+before reaching the origin server; see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-3.7" class="relref">Section 3.7</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>.  Because
 this limit is applied separately by each implementation which processes the
 message, messages below this limit are not guaranteed to be accepted.<a href="#section-4.1.1.3-2" class="pilcrow">¶</a></p>
 </section>
@@ -2062,7 +2073,7 @@ idempotent actions such as GET, PUT, or DELETE can be safely retried; a client
 <span class="bcp14">SHOULD NOT</span> automatically retry a request with a non-idempotent method unless it
 has some means to know that the request semantics are idempotent
 independent of the method or some means to detect that the original request was
-never applied.  See <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-9.2.2" class="relref">Section 9.2.2</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span> for more details.<a href="#section-4.1.2-6" class="pilcrow">¶</a></p>
+never applied.  See <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-9.2.2" class="relref">Section 9.2.2</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span> for more details.<a href="#section-4.1.2-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="malformed">
@@ -2089,7 +2100,7 @@ frames but is invalid due to:<a href="#section-4.1.3-1" class="pilcrow">¶</a></
 </li>
           </ul>
 <p id="section-4.1.3-3">A request or response that is defined as having content when it contains a
-Content-Length header field (<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-6.4.1" class="relref">Section 6.4.1</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>),
+Content-Length header field (<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-6.4.1" class="relref">Section 6.4.1</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>),
 is malformed if the value of a Content-Length header field does not equal the
 sum of the DATA frame lengths received. A response that is defined as never
 having content, even when a Content-Length is present, can have a non-zero
@@ -2113,7 +2124,7 @@ permissive can expose implementations to these vulnerabilities.<a href="#section
 <a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-the-connect-method" class="section-name selfRef">The CONNECT Method</a>
         </h3>
 <p id="section-4.2-1">The CONNECT method requests that the recipient establish a tunnel to the
-destination origin server identified by the request-target; see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-9.3.6" class="relref">Section 9.3.6</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>. It is primarily used with HTTP proxies to establish a TLS
+destination origin server identified by the request-target; see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-9.3.6" class="relref">Section 9.3.6</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>. It is primarily used with HTTP proxies to establish a TLS
 session with an origin server for the purposes of interacting with "https"
 resources.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
 <p id="section-4.2-2">In HTTP/1.x, CONNECT is used to convert an entire HTTP connection into a tunnel
@@ -2127,7 +2138,7 @@ a tunnel over a single stream.<a href="#section-4.2-2" class="pilcrow">¶</a></p
 </li>
           <li class="normal" id="section-4.2-4.3">The ":authority" pseudo-header field contains the host and port to connect to
 (equivalent to the authority-form of the request-target of CONNECT requests;
-see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-7.1" class="relref">Section 7.1</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>)<a href="#section-4.2-4.3" class="pilcrow">¶</a>
+see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-7.1" class="relref">Section 7.1</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>)<a href="#section-4.2-4.3" class="pilcrow">¶</a>
 </li>
         </ul>
 <p id="section-4.2-5">The request stream remains open at the end of the request to carry the data to
@@ -2136,7 +2147,7 @@ is malformed; see <a href="#malformed" class="xref">Section 4.1.3</a>.<a href="#
 <p id="section-4.2-6">A proxy that supports CONNECT establishes a TCP connection (<span>[<a href="#RFC0793" class="xref">RFC0793</a>]</span>) to the
 server identified in the ":authority" pseudo-header field.  Once this connection
 is successfully established, the proxy sends a HEADERS frame containing a 2xx
-series status code to the client, as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-15.3" class="relref">Section 15.3</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>.<a href="#section-4.2-6" class="pilcrow">¶</a></p>
+series status code to the client, as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-15.3" class="relref">Section 15.3</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>.<a href="#section-4.2-6" class="pilcrow">¶</a></p>
 <p id="section-4.2-7">All DATA frames on the stream correspond to data sent or received on the TCP
 connection. The payload of any DATA frame sent by the client is transmitted by
 the proxy to the TCP server; data received from the TCP server is packaged into
@@ -2164,7 +2175,7 @@ implementation permits it, the proxy <span class="bcp14">SHOULD</span> send a TC
 set.<a href="#section-4.2-10" class="pilcrow">¶</a></p>
 <p id="section-4.2-11">Since CONNECT creates a tunnel to an arbitrary server, proxies that support
 CONNECT <span class="bcp14">SHOULD</span> restrict its use to a set of known ports or a list of safe
-request targets; see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-9.3.6" class="relref">Section 9.3.6</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span> for more detail.<a href="#section-4.2-11" class="pilcrow">¶</a></p>
+request targets; see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-9.3.6" class="relref">Section 9.3.6</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span> for more detail.<a href="#section-4.2-11" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="http-upgrade">
@@ -2172,7 +2183,7 @@ request targets; see <span><a href="https://datatracker.ietf.org/doc/html/draft-
         <h3 id="name-http-upgrade">
 <a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-http-upgrade" class="section-name selfRef">HTTP Upgrade</a>
         </h3>
-<p id="section-4.3-1">HTTP/3 does not support the HTTP Upgrade mechanism (<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-7.8" class="relref">Section 7.8</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>) or 101 (Switching Protocols) informational status code (<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-15.2.2" class="relref">Section 15.2.2</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>).<a href="#section-4.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.3-1">HTTP/3 does not support the HTTP Upgrade mechanism (<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-7.8" class="relref">Section 7.8</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>) or 101 (Switching Protocols) informational status code (<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-15.2.2" class="relref">Section 15.2.2</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>).<a href="#section-4.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="server-push">
@@ -2214,9 +2225,9 @@ be fulfilling a previous promise.<a href="#section-4.4-6" class="pilcrow">¶</a>
 <p id="section-4.4-7">Not all requests can be pushed.  A server <span class="bcp14">MAY</span> push requests that have the
 following properties:<a href="#section-4.4-7" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.4-8.1">cacheable; see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-9.2.3" class="relref">Section 9.2.3</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span><a href="#section-4.4-8.1" class="pilcrow">¶</a>
+<li class="normal" id="section-4.4-8.1">cacheable; see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-9.2.3" class="relref">Section 9.2.3</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span><a href="#section-4.4-8.1" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-4.4-8.2">safe; see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-9.2.1" class="relref">Section 9.2.1</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span><a href="#section-4.4-8.2" class="pilcrow">¶</a>
+          <li class="normal" id="section-4.4-8.2">safe; see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-9.2.1" class="relref">Section 9.2.1</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span><a href="#section-4.4-8.2" class="pilcrow">¶</a>
 </li>
           <li class="normal" id="section-4.4-8.3">does not include a request body or trailer section<a href="#section-4.4-8.3" class="pilcrow">¶</a>
 </li>
@@ -2252,10 +2263,10 @@ commit to the pushed stream.<a href="#section-4.4-13" class="pilcrow">¶</a></p>
 case, the client can abort reading the stream with an error code of
 H3_REQUEST_CANCELLED. This asks the server not to transfer additional data and
 indicates that it will be discarded upon receipt.<a href="#section-4.4-14" class="pilcrow">¶</a></p>
-<p id="section-4.4-15">Pushed responses that are cacheable (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-cache-18#section-3" class="relref">Section 3</a> of [<a href="#CACHING" class="xref">CACHING</a>]</span>) can be
+<p id="section-4.4-15">Pushed responses that are cacheable (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-cache-19#section-3" class="relref">Section 3</a> of [<a href="#CACHING" class="xref">CACHING</a>]</span>) can be
 stored by the client, if it implements an HTTP cache. Pushed responses are
 considered successfully validated on the origin server (e.g., if the "no-cache"
-cache response directive is present; see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-cache-18#section-5.2.2.3" class="relref">Section 5.2.2.3</a> of [<a href="#CACHING" class="xref">CACHING</a>]</span>) at the
+cache response directive is present; see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-cache-19#section-5.2.2.3" class="relref">Section 5.2.2.3</a> of [<a href="#CACHING" class="xref">CACHING</a>]</span>) at the
 time the pushed response is received.<a href="#section-4.4-15" class="pilcrow">¶</a></p>
 <p id="section-4.4-16">Pushed responses that are not cacheable <span class="bcp14">MUST NOT</span> be stored by any HTTP cache.
 They <span class="bcp14">MAY</span> be made available to the application separately.<a href="#section-4.4-16" class="pilcrow">¶</a></p>
@@ -2465,7 +2476,7 @@ follows this integer is determined by the stream type.<a href="#section-6.2-1" c
 <span id="name-unidirectional-stream-heade"></span><div id="fig-stream-header">
 <figure id="figure-1">
           <div id="section-6.2-2.1">
-<pre class="sourcecode lang-drawing">
+<pre class="lang-drawing sourcecode">
 Unidirectional Stream Header {
   Stream Type (i),
 }
@@ -2560,7 +2571,7 @@ responses followed by a single final HTTP response, as defined in
 <span id="name-push-stream-header"></span><div id="fig-push-stream-header">
 <figure id="figure-2">
             <div id="section-6.2.2-4.1">
-<pre class="sourcecode lang-drawing">
+<pre class="lang-drawing sourcecode">
 Push Stream Header {
   Stream Type (i) = 0x01,
   Push ID (i),
@@ -2713,7 +2724,7 @@ is provided in the relevant section.<a href="#section-7-3" class="pilcrow">¶</a
 <span id="name-http-3-frame-format"></span><div id="fig-frame">
 <figure id="figure-3">
           <div id="section-7.1-2.1">
-<pre class="sourcecode lang-drawing">
+<pre class="lang-drawing sourcecode">
 HTTP/3 Frame Format {
   Type (i),
   Length (i),
@@ -2774,7 +2785,7 @@ connection error of type H3_FRAME_UNEXPECTED; see <a href="#errors" class="xref"
 <span id="name-data-frame"></span><div id="fig-data">
 <figure id="figure-4">
             <div id="section-7.2.1-3.1">
-<pre class="sourcecode lang-drawing">
+<pre class="lang-drawing sourcecode">
 DATA Frame {
   Type (i) = 0x00,
   Length (i),
@@ -2798,7 +2809,7 @@ using QPACK. See <span>[<a href="#QPACK" class="xref">QPACK</a>]</span> for more
 <span id="name-headers-frame"></span><div id="fig-headers">
 <figure id="figure-5">
             <div id="section-7.2.2-2.1">
-<pre class="sourcecode lang-drawing">
+<pre class="lang-drawing sourcecode">
 HEADERS Frame {
   Type (i) = 0x01,
   Length (i),
@@ -2850,7 +2861,7 @@ error of type H3_FRAME_UNEXPECTED.<a href="#section-7.2.3-5" class="pilcrow">¶<
 <span id="name-cancel_push-frame"></span><div id="fig-cancel-push">
 <figure id="figure-6">
             <div id="section-7.2.3-6.1">
-<pre class="sourcecode lang-drawing">
+<pre class="lang-drawing sourcecode">
 CANCEL_PUSH Frame {
   Type (i) = 0x03,
   Length (i),
@@ -2910,7 +2921,7 @@ variable-length integers.<a href="#section-7.2.4-7" class="pilcrow">¶</a></p>
 <span id="name-settings-frame"></span><div id="fig-ext-settings">
 <figure id="figure-7">
             <div id="section-7.2.4-8.1">
-<pre class="sourcecode lang-drawing">
+<pre class="lang-drawing sourcecode">
 Setting {
   Identifier (i),
   Value (i),
@@ -3019,7 +3030,7 @@ section from server to client on a request stream, as in HTTP/2.<a href="#sectio
 <span id="name-push_promise-frame"></span><div id="fig-push-promise">
 <figure id="figure-8">
             <div id="section-7.2.5-2.1">
-<pre class="sourcecode lang-drawing">
+<pre class="lang-drawing sourcecode">
 PUSH_PROMISE Frame {
   Type (i) = 0x05,
   Length (i),
@@ -3088,7 +3099,7 @@ maintenance.  GOAWAY by itself does not close a connection.<a href="#section-7.2
 <span id="name-goaway-frame"></span><div id="fig-goaway">
 <figure id="figure-9">
             <div id="section-7.2.6-2.1">
-<pre class="sourcecode lang-drawing">
+<pre class="lang-drawing sourcecode">
 GOAWAY Frame {
   Type (i) = 0x07,
   Length (i),
@@ -3136,7 +3147,7 @@ pushes.<a href="#section-7.2.7-4" class="pilcrow">¶</a></p>
 <span id="name-max_push_id-frame"></span><div id="fig-max-push">
 <figure id="figure-10">
             <div id="section-7.2.7-5.1">
-<pre class="sourcecode lang-drawing">
+<pre class="lang-drawing sourcecode">
 MAX_PUSH_ID Frame {
   Type (i) = 0x0d,
   Length (i),
@@ -3374,7 +3385,7 @@ apply to <span>[<a href="#QUIC-TRANSPORT" class="xref">QUIC-TRANSPORT</a>]</span
 <a href="#section-10.1" class="section-number selfRef">10.1. </a><a href="#name-server-authority" class="section-name selfRef">Server Authority</a>
         </h3>
 <p id="section-10.1-1">HTTP/3 relies on the HTTP definition of authority. The security considerations
-of establishing authority are discussed in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-17.1" class="relref">Section 17.1</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>.<a href="#section-10.1-1" class="pilcrow">¶</a></p>
+of establishing authority are discussed in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-17.1" class="relref">Section 17.1</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>.<a href="#section-10.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="cross-protocol-attacks">
@@ -3396,7 +3407,7 @@ authenticated transports.<a href="#section-10.2-2" class="pilcrow">¶</a></p>
 <a href="#section-10.3" class="section-number selfRef">10.3. </a><a href="#name-intermediary-encapsulation-" class="section-name selfRef">Intermediary Encapsulation Attacks</a>
         </h3>
 <p id="section-10.3-1">The HTTP/3 field encoding allows the expression of names that are not valid
-field names in the syntax used by HTTP (<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-5.1" class="relref">Section 5.1</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>).
+field names in the syntax used by HTTP (<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-5.1" class="relref">Section 5.1</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>).
 Requests or responses containing invalid field names <span class="bcp14">MUST</span> be treated as
 malformed (<a href="#malformed" class="xref">Section 4.1.3</a>).  An intermediary therefore cannot translate an HTTP/3
 request or response containing an invalid field name into an HTTP/1.1 message.<a href="#section-10.3-1" class="pilcrow">¶</a></p>
@@ -3406,7 +3417,7 @@ ASCII 0x0d), line feed (LF, ASCII 0x0d), and the zero character (NUL, ASCII
 0x0d) might be exploited by an attacker if they are translated verbatim. Any
 request or response that contains a character not permitted in a field value
 <span class="bcp14">MUST</span> be treated as malformed (<a href="#malformed" class="xref">Section 4.1.3</a>).  Valid characters are defined by
-the "field-content" ABNF rule in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-5.5" class="relref">Section 5.5</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>.<a href="#section-10.3-2" class="pilcrow">¶</a></p>
+the "field-content" ABNF rule in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-5.5" class="relref">Section 5.5</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>.<a href="#section-10.3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="cacheability-of-pushed-responses">
@@ -3511,7 +3522,7 @@ terminates.<a href="#section-10.5.2-2" class="pilcrow">¶</a></p>
 <p id="section-10.6-1">Compression can allow an attacker to recover secret data when it is compressed
 in the same context as data under attacker control. HTTP/3 enables compression
 of fields (<a href="#header-formatting" class="xref">Section 4.1.1</a>); the following concerns also apply to the use
-of HTTP compressed content-codings; see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18#section-8.4.1" class="relref">Section 8.4.1</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>.<a href="#section-10.6-1" class="pilcrow">¶</a></p>
+of HTTP compressed content-codings; see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19#section-8.4.1" class="relref">Section 8.4.1</a> of [<a href="#SEMANTICS" class="xref">SEMANTICS</a>]</span>.<a href="#section-10.6-1" class="pilcrow">¶</a></p>
 <p id="section-10.6-2">There are demonstrable attacks on compression that exploit the characteristics
 of the web (e.g., <span>[<a href="#BREACH" class="xref">BREACH</a>]</span>).  The attacker induces multiple requests
 containing varying plaintext, observing the length of the resulting ciphertext
@@ -4161,7 +4172,7 @@ IANA and <span class="bcp14">MUST NOT</span> appear in the listing of assigned v
 <dd class="break"></dd>
 <dt id="CACHING">[CACHING]</dt>
         <dd>
-<span class="refAuthor">Fielding, R. T.</span>, <span class="refAuthor">Nottingham, M.</span>, and <span class="refAuthor">J. Reschke</span>, <span class="refTitle">"HTTP Caching"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-httpbis-cache-18</span>, <time datetime="2021-08-18" class="refDate">18 August 2021</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-cache-18">https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-cache-18</a>&gt;</span>. </dd>
+<span class="refAuthor">Fielding, R. T.</span>, <span class="refAuthor">Nottingham, M.</span>, and <span class="refAuthor">J. Reschke</span>, <span class="refTitle">"HTTP Caching"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-httpbis-cache-19</span>, <time datetime="2021-09-12" class="refDate">12 September 2021</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-cache-19">https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-cache-19</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="HTTP-REPLAY">[HTTP-REPLAY]</dt>
         <dd>
@@ -4169,11 +4180,11 @@ IANA and <span class="bcp14">MUST NOT</span> appear in the listing of assigned v
 <dd class="break"></dd>
 <dt id="QPACK">[QPACK]</dt>
         <dd>
-<span class="refAuthor">Krasic, C.</span>, <span class="refAuthor">Bishop, M.</span>, and <span class="refAuthor">A. Frindell, Ed.</span>, <span class="refTitle">"QPACK: Header Compression for HTTP over QUIC"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-qpack</span>, <time datetime="2021-08-23" class="refDate">23 August 2021</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-quic-qpack">https://datatracker.ietf.org/doc/html/draft-ietf-quic-qpack</a>&gt;</span>. </dd>
+<span class="refAuthor">Krasic, C.</span>, <span class="refAuthor">Bishop, M.</span>, and <span class="refAuthor">A. Frindell, Ed.</span>, <span class="refTitle">"QPACK: Header Compression for HTTP over QUIC"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-qpack</span>, <time datetime="2021-10-04" class="refDate">4 October 2021</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-quic-qpack">https://datatracker.ietf.org/doc/html/draft-ietf-quic-qpack</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="QUIC-TRANSPORT">[QUIC-TRANSPORT]</dt>
         <dd>
-<span class="refAuthor">Iyengar, J., Ed.</span> and <span class="refAuthor">M. Thomson, Ed.</span>, <span class="refTitle">"QUIC: A UDP-Based Multiplexed and Secure Transport"</span>, <span class="seriesInfo">RFC 9000</span>, <span class="seriesInfo">DOI 10.17487/RFC9000</span>, <time datetime="2021-08-23" class="refDate">23 August 2021</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/rfc9000">https://datatracker.ietf.org/doc/html/rfc9000</a>&gt;</span>. </dd>
+<span class="refAuthor">Iyengar, J., Ed.</span> and <span class="refAuthor">M. Thomson, Ed.</span>, <span class="refTitle">"QUIC: A UDP-Based Multiplexed and Secure Transport"</span>, <span class="seriesInfo">RFC 9000</span>, <span class="seriesInfo">DOI 10.17487/RFC9000</span>, <time datetime="2021-10-04" class="refDate">4 October 2021</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/rfc9000">https://datatracker.ietf.org/doc/html/rfc9000</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC0793">[RFC0793]</dt>
         <dd>
@@ -4205,7 +4216,7 @@ IANA and <span class="bcp14">MUST NOT</span> appear in the listing of assigned v
 <dd class="break"></dd>
 <dt id="SEMANTICS">[SEMANTICS]</dt>
         <dd>
-<span class="refAuthor">Fielding, R. T.</span>, <span class="refAuthor">Nottingham, M.</span>, and <span class="refAuthor">J. Reschke</span>, <span class="refTitle">"HTTP Semantics"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-httpbis-semantics-18</span>, <time datetime="2021-08-18" class="refDate">18 August 2021</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18">https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-18</a>&gt;</span>. </dd>
+<span class="refAuthor">Fielding, R. T.</span>, <span class="refAuthor">Nottingham, M.</span>, and <span class="refAuthor">J. Reschke</span>, <span class="refTitle">"HTTP Semantics"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-httpbis-semantics-19</span>, <time datetime="2021-09-12" class="refDate">12 September 2021</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19">https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-semantics-19</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="URI">[URI]</dt>
       <dd>
@@ -4232,7 +4243,7 @@ IANA and <span class="bcp14">MUST NOT</span> appear in the listing of assigned v
 <dd class="break"></dd>
 <dt id="HTTP11">[HTTP11]</dt>
         <dd>
-<span class="refAuthor">Fielding, R. T.</span>, <span class="refAuthor">Nottingham, M.</span>, and <span class="refAuthor">J. Reschke</span>, <span class="refTitle">"HTTP/1.1"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-httpbis-messaging-18</span>, <time datetime="2021-08-18" class="refDate">18 August 2021</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-messaging-18">https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-messaging-18</a>&gt;</span>. </dd>
+<span class="refAuthor">Fielding, R. T.</span>, <span class="refAuthor">Nottingham, M.</span>, and <span class="refAuthor">J. Reschke</span>, <span class="refTitle">"HTTP/1.1"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-httpbis-messaging-19</span>, <time datetime="2021-09-12" class="refDate">12 September 2021</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-messaging-19">https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-messaging-19</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="HTTP2">[HTTP2]</dt>
         <dd>
