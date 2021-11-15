@@ -5,10 +5,10 @@
 QUIC                                                           C. Krasic
 Internet-Draft                                                   Netflix
 Intended status: Standards Track                               M. Bishop
-Expires: 7 April 2022                                Akamai Technologies
+Expires: 19 May 2022                                 Akamai Technologies
                                                         A. Frindell, Ed.
                                                                 Facebook
-                                                          4 October 2021
+                                                        15 November 2021
 
 
                   QPACK: Header Compression for HTTP/3
@@ -36,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 April 2022.
+   This Internet-Draft will expire on 19 May 2022.
 
 Copyright Notice
 
@@ -48,9 +48,9 @@ Copyright Notice
    license-info) in effect on the date of publication of this document.
    Please review these documents carefully, as they describe your rights
    and restrictions with respect to this document.  Code Components
-   extracted from this document must include Simplified BSD License text
-   as described in Section 4.e of the Trust Legal Provisions and are
-   provided without warranty as described in the Simplified BSD License.
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
 
 Table of Contents
 
@@ -1035,12 +1035,6 @@ Table of Contents
    greater than the Required Insert Count, so the delta will be positive
    and the sign bit is set to 0.
 
-   The value of Base MUST NOT be negative.  Though the protocol might
-   operate correctly with a negative base using post-base indexing, it
-   is unnecessary and inefficient.  An endpoint MUST treat a field block
-   with an S bit of 1 as invalid if the value of Required Insert Count
-   is less than or equal to the value of Delta Base.
-
    An encoder that produces table updates before encoding a field
    section might set Base to the value of Required Insert Count.  In
    such case, both the sign bit and the Delta Base will be set to zero.
@@ -1533,32 +1527,32 @@ Table of Contents
 
    [HTTP3]    Bishop, M., Ed., "Hypertext Transfer Protocol Version 3
               (HTTP/3)", Work in Progress, Internet-Draft, draft-ietf-
-              quic-http, 4 October 2021,
+              quic-http, 15 November 2021,
               <https://datatracker.ietf.org/doc/html/draft-ietf-quic-
               http>.
 
    [QUIC-TRANSPORT]
               Iyengar, J., Ed. and M. Thomson, Ed., "QUIC: A UDP-Based
               Multiplexed and Secure Transport", RFC 9000,
-              DOI 10.17487/RFC9000, 4 October 2021,
-              <https://datatracker.ietf.org/doc/html/rfc9000>.
+              DOI 10.17487/RFC9000, 15 November 2021,
+              <https://www.rfc-editor.org/rfc/rfc9000>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
-              <https://datatracker.ietf.org/doc/html/rfc2119>.
+              <https://www.rfc-editor.org/rfc/rfc2119>.
 
    [RFC2360]  Scott, G., "Guide for Internet Standards Writers", BCP 22,
               RFC 2360, DOI 10.17487/RFC2360, June 1998,
-              <https://datatracker.ietf.org/doc/html/rfc2360>.
+              <https://www.rfc-editor.org/rfc/rfc2360>.
 
    [RFC7541]  Peon, R. and H. Ruellan, "HPACK: Header Compression for
               HTTP/2", RFC 7541, DOI 10.17487/RFC7541, May 2015,
-              <https://datatracker.ietf.org/doc/html/rfc7541>.
+              <https://www.rfc-editor.org/rfc/rfc7541>.
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
-              May 2017, <https://datatracker.ietf.org/doc/html/rfc8174>.
+              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
    [SEMANTICS]
               Fielding, R. T., Nottingham, M., and J. Reschke, "HTTP
@@ -1579,20 +1573,20 @@ Table of Contents
 
    [RFC1951]  Deutsch, P., "DEFLATE Compressed Data Format Specification
               version 1.3", RFC 1951, DOI 10.17487/RFC1951, May 1996,
-              <https://datatracker.ietf.org/doc/html/rfc1951>.
+              <https://www.rfc-editor.org/rfc/rfc1951>.
 
    [RFC6454]  Barth, A., "The Web Origin Concept", RFC 6454,
               DOI 10.17487/RFC6454, December 2011,
-              <https://datatracker.ietf.org/doc/html/rfc6454>.
+              <https://www.rfc-editor.org/rfc/rfc6454>.
 
    [RFC7540]  Belshe, M., Peon, R., and M. Thomson, Ed., "Hypertext
               Transfer Protocol Version 2 (HTTP/2)", RFC 7540,
               DOI 10.17487/RFC7540, May 2015,
-              <https://datatracker.ietf.org/doc/html/rfc7540>.
+              <https://www.rfc-editor.org/rfc/rfc7540>.
 
    [TLS]      Rescorla, E., "The Transport Layer Security (TLS) Protocol
               Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
-              <https://datatracker.ietf.org/doc/html/rfc8446>.
+              <https://www.rfc-editor.org/rfc/rfc8446>.
 
 Appendix A.  Static Table
 

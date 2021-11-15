@@ -4,8 +4,8 @@
 
 QUIC                                                      M. Bishop, Ed.
 Internet-Draft                                                    Akamai
-Intended status: Standards Track                          4 October 2021
-Expires: 7 April 2022
+Intended status: Standards Track                        15 November 2021
+Expires: 19 May 2022
 
 
              Hypertext Transfer Protocol Version 3 (HTTP/3)
@@ -35,7 +35,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 April 2022.
+   This Internet-Draft will expire on 19 May 2022.
 
 Copyright Notice
 
@@ -47,9 +47,9 @@ Copyright Notice
    license-info) in effect on the date of publication of this document.
    Please review these documents carefully, as they describe your rights
    and restrictions with respect to this document.  Code Components
-   extracted from this document must include Simplified BSD License text
-   as described in Section 4.e of the Trust Legal Provisions and are
-   provided without warranty as described in the Simplified BSD License.
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
 
 Table of Contents
 
@@ -885,10 +885,17 @@ Table of Contents
    A TCP connection error is signaled by abruptly terminating the
    stream.  A proxy treats any error in the TCP connection, which
    includes receiving a TCP segment with the RST bit set, as a stream
-   error of type H3_CONNECT_ERROR; see Section 8.  Correspondingly, if a
-   proxy detects an error with the stream or the QUIC connection, it
-   MUST close the TCP connection.  If the underlying TCP implementation
-   permits it, the proxy SHOULD send a TCP segment with the RST bit set.
+   error of type H3_CONNECT_ERROR; see Section 8.
+
+   Correspondingly, if a proxy detects an error with the stream or the
+   QUIC connection, it MUST close the TCP connection.  If the proxy
+   detects that the client has reset the stream or aborted reading from
+   the stream, it MUST close the TCP connection.  If the stream is reset
+   or reading is aborted by the client, a proxy SHOULD perform the same
+   operation on the other direction in order to ensure that both
+   directions of the stream are cancelled.  In all these cases, if the
+   underlying TCP implementation permits it, the proxy SHOULD send a TCP
+   segment with the RST bit set.
 
    Since CONNECT creates a tunnel to an arbitrary server, proxies that
    support CONNECT SHOULD restrict its use to a set of known ports or a
@@ -2509,8 +2516,7 @@ Table of Contents
 
    [ALTSVC]   Nottingham, M., McManus, P., and J. Reschke, "HTTP
               Alternative Services", RFC 7838, DOI 10.17487/RFC7838,
-              April 2016,
-              <https://datatracker.ietf.org/doc/html/rfc7838>.
+              April 2016, <https://www.rfc-editor.org/rfc/rfc7838>.
 
    [CACHING]  Fielding, R. T., Nottingham, M., and J. Reschke, "HTTP
               Caching", Work in Progress, Internet-Draft, draft-ietf-
@@ -2521,52 +2527,51 @@ Table of Contents
    [HTTP-REPLAY]
               Thomson, M., Nottingham, M., and W. Tarreau, "Using Early
               Data in HTTP", RFC 8470, DOI 10.17487/RFC8470, September
-              2018, <https://datatracker.ietf.org/doc/html/rfc8470>.
+              2018, <https://www.rfc-editor.org/rfc/rfc8470>.
 
    [QPACK]    Krasic, C., Bishop, M., and A. Frindell, Ed., "QPACK:
               Header Compression for HTTP over QUIC", Work in Progress,
-              Internet-Draft, draft-ietf-quic-qpack, 4 October 2021,
+              Internet-Draft, draft-ietf-quic-qpack, 15 November 2021,
               <https://datatracker.ietf.org/doc/html/draft-ietf-quic-
               qpack>.
 
    [QUIC-TRANSPORT]
               Iyengar, J., Ed. and M. Thomson, Ed., "QUIC: A UDP-Based
               Multiplexed and Secure Transport", RFC 9000,
-              DOI 10.17487/RFC9000, 4 October 2021,
-              <https://datatracker.ietf.org/doc/html/rfc9000>.
+              DOI 10.17487/RFC9000, 15 November 2021,
+              <https://www.rfc-editor.org/rfc/rfc9000>.
 
    [RFC0793]  Postel, J., "Transmission Control Protocol", STD 7,
               RFC 793, DOI 10.17487/RFC0793, September 1981,
-              <https://datatracker.ietf.org/doc/html/rfc793>.
+              <https://www.rfc-editor.org/rfc/rfc793>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
-              <https://datatracker.ietf.org/doc/html/rfc2119>.
+              <https://www.rfc-editor.org/rfc/rfc2119>.
 
    [RFC6066]  Eastlake 3rd, D., "Transport Layer Security (TLS)
               Extensions: Extension Definitions", RFC 6066,
               DOI 10.17487/RFC6066, January 2011,
-              <https://datatracker.ietf.org/doc/html/rfc6066>.
+              <https://www.rfc-editor.org/rfc/rfc6066>.
 
    [RFC6265]  Barth, A., "HTTP State Management Mechanism", RFC 6265,
               DOI 10.17487/RFC6265, April 2011,
-              <https://datatracker.ietf.org/doc/html/rfc6265>.
+              <https://www.rfc-editor.org/rfc/rfc6265>.
 
    [RFC7301]  Friedl, S., Popov, A., Langley, A., and E. Stephan,
               "Transport Layer Security (TLS) Application-Layer Protocol
               Negotiation Extension", RFC 7301, DOI 10.17487/RFC7301,
-              July 2014,
-              <https://datatracker.ietf.org/doc/html/rfc7301>.
+              July 2014, <https://www.rfc-editor.org/rfc/rfc7301>.
 
    [RFC8126]  Cotton, M., Leiba, B., and T. Narten, "Guidelines for
               Writing an IANA Considerations Section in RFCs", BCP 26,
               RFC 8126, DOI 10.17487/RFC8126, June 2017,
-              <https://datatracker.ietf.org/doc/html/rfc8126>.
+              <https://www.rfc-editor.org/rfc/rfc8126>.
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
-              May 2017, <https://datatracker.ietf.org/doc/html/rfc8174>.
+              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
    [SEMANTICS]
               Fielding, R. T., Nottingham, M., and J. Reschke, "HTTP
@@ -2578,7 +2583,7 @@ Table of Contents
    [URI]      Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform
               Resource Identifier (URI): Generic Syntax", STD 66,
               RFC 3986, DOI 10.17487/RFC3986, January 2005,
-              <https://datatracker.ietf.org/doc/html/rfc3986>.
+              <https://www.rfc-editor.org/rfc/rfc3986>.
 
 12.2.  Informative References
 
@@ -2590,12 +2595,11 @@ Table of Contents
    [DNS-TERMS]
               Hoffman, P., Sullivan, A., and K. Fujiwara, "DNS
               Terminology", BCP 219, RFC 8499, DOI 10.17487/RFC8499,
-              January 2019,
-              <https://datatracker.ietf.org/doc/html/rfc8499>.
+              January 2019, <https://www.rfc-editor.org/rfc/rfc8499>.
 
    [HPACK]    Peon, R. and H. Ruellan, "HPACK: Header Compression for
               HTTP/2", RFC 7541, DOI 10.17487/RFC7541, May 2015,
-              <https://datatracker.ietf.org/doc/html/rfc7541>.
+              <https://www.rfc-editor.org/rfc/rfc7541>.
 
    [HTTP11]   Fielding, R. T., Nottingham, M., and J. Reschke,
               "HTTP/1.1", Work in Progress, Internet-Draft, draft-ietf-
@@ -2606,23 +2610,23 @@ Table of Contents
    [HTTP2]    Belshe, M., Peon, R., and M. Thomson, Ed., "Hypertext
               Transfer Protocol Version 2 (HTTP/2)", RFC 7540,
               DOI 10.17487/RFC7540, May 2015,
-              <https://datatracker.ietf.org/doc/html/rfc7540>.
+              <https://www.rfc-editor.org/rfc/rfc7540>.
 
    [RFC6585]  Nottingham, M. and R. Fielding, "Additional HTTP Status
               Codes", RFC 6585, DOI 10.17487/RFC6585, April 2012,
-              <https://datatracker.ietf.org/doc/html/rfc6585>.
+              <https://www.rfc-editor.org/rfc/rfc6585>.
 
    [RFC8164]  Nottingham, M. and M. Thomson, "Opportunistic Security for
               HTTP/2", RFC 8164, DOI 10.17487/RFC8164, May 2017,
-              <https://datatracker.ietf.org/doc/html/rfc8164>.
+              <https://www.rfc-editor.org/rfc/rfc8164>.
 
    [TFO]      Cheng, Y., Chu, J., Radhakrishnan, S., and A. Jain, "TCP
               Fast Open", RFC 7413, DOI 10.17487/RFC7413, December 2014,
-              <https://datatracker.ietf.org/doc/html/rfc7413>.
+              <https://www.rfc-editor.org/rfc/rfc7413>.
 
    [TLS13]    Rescorla, E., "The Transport Layer Security (TLS) Protocol
               Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
-              <https://datatracker.ietf.org/doc/html/rfc8446>.
+              <https://www.rfc-editor.org/rfc/rfc8446>.
 
 Appendix A.  Considerations for Transitioning from HTTP/2
 
