@@ -4,8 +4,8 @@
 
 QUIC                                                      M. Bishop, Ed.
 Internet-Draft                                                    Akamai
-Intended status: Standards Track                         2 November 2021
-Expires: 6 May 2022
+Intended status: Standards Track                        15 November 2021
+Expires: 19 May 2022
 
 
              Hypertext Transfer Protocol Version 3 (HTTP/3)
@@ -35,7 +35,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 May 2022.
+   This Internet-Draft will expire on 19 May 2022.
 
 Copyright Notice
 
@@ -1927,8 +1927,8 @@ Table of Contents
    (Section 11.2.3), and stream types (Section 11.2.4).
 
    Implementations MUST ignore unknown or unsupported values in all
-   extensible protocol elements.  Implementations MUST discard data and/
-   or abort reading on unidirectional streams that have unknown or
+   extensible protocol elements.  Implementations MUST discard data or
+   abort reading on unidirectional streams that have unknown or
    unsupported types.  This means that any of these extension points can
    be safely used by extensions without prior arrangement or
    negotiation.  However, where a known frame type is required to be in
@@ -2526,14 +2526,14 @@ Table of Contents
 
    [QPACK]    Krasic, C., Bishop, M., and A. Frindell, Ed., "QPACK:
               Header Compression for HTTP over QUIC", Work in Progress,
-              Internet-Draft, draft-ietf-quic-qpack, 2 November 2021,
+              Internet-Draft, draft-ietf-quic-qpack, 15 November 2021,
               <https://datatracker.ietf.org/doc/html/draft-ietf-quic-
               qpack>.
 
    [QUIC-TRANSPORT]
               Iyengar, J., Ed. and M. Thomson, Ed., "QUIC: A UDP-Based
               Multiplexed and Secure Transport", RFC 9000,
-              DOI 10.17487/RFC9000, 2 November 2021,
+              DOI 10.17487/RFC9000, 15 November 2021,
               <https://www.rfc-editor.org/rfc/rfc9000>.
 
    [RFC0793]  Postel, J., "Transmission Control Protocol", STD 7,
